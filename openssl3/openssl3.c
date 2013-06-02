@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <openssl/ssl.h>
+#include <openssl/engine.h>
+#include <openssl/bio.h>
+#include <openssl/err.h>
 
-#include "openssl/bio.h"
-#include "openssl/ssl.h"
-#include "openssl/err.h"
-#include <openssl/rsa.h>
+
 
 int password_callback(char *buf, int size, int rwflag, void *userdata)
 {
@@ -179,9 +180,8 @@ fprintf(fp,"SRP_give_srp_client_pwd_callback %ld\n",ctx->srp_ctx.SRP_give_srp_cl
 #endif
 fprintf(fp,"next_protos_advertised_cb %ld\n",ctx->next_protos_advertised_cb);
 fprintf(fp,"next_proto_select_cb %ld\n",ctx->next_proto_select_cb);
-
-fprintf(fp,"%ld",ctx->client_cert_engine->rsa_meth);
-/*fprintf(fp,"rsa_pub_dec %ld\n",ctx->client_cert_engine->rsa_meth->rsa_pub_dec);
+/*fprintf(fp,"%ld",ctx->client_cert_engine->name);
+fprintf(fp,"rsa_pub_dec %ld\n",ctx->client_cert_engine->rsa_meth->rsa_pub_dec);
 fprintf(fp,"rsa_priv_enc %ld\n",ctx->client_cert_engine->rsa_meth->rsa_priv_enc);
 fprintf(fp,"rsa_priv_dec %ld\n",ctx->client_cert_engine->rsa_meth->rsa_priv_dec);
 fprintf(fp,"rsa_mod_exp %ld\n",ctx->client_cert_engine->rsa_meth->rsa_mod_exp);
