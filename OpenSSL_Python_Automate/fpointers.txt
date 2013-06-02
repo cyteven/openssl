@@ -1,0 +1,92 @@
+1. method
+	int (*ssl_new)(SSL *s);
+	void (*ssl_clear)(SSL *s);
+	void (*ssl_free)(SSL *s);
+	int (*ssl_accept)(SSL *s);
+	int (*ssl_connect)(SSL *s);
+	int (*ssl_read)(SSL *s,void *buf,int len);
+	int (*ssl_peek)(SSL *s,void *buf,int len);
+	int (*ssl_write)(SSL *s,const void *buf,int len);
+	int (*ssl_shutdown)(SSL *s);
+	int (*ssl_renegotiate)(SSL *s);
+	int (*ssl_renegotiate_check)(SSL *s);
+	long (*ssl_get_message)(SSL *s, int st1, int stn, int mt, long max, int *ok);
+	int (*ssl_read_bytes)(SSL *s, int type, unsigned char *buf, int len, int peek);
+	int (*ssl_write_bytes)(SSL *s, int type, const void *buf_, int len);
+	int (*ssl_dispatch_alert)(SSL *s);
+	long (*ssl_ctrl)(SSL *s,int cmd,long larg,void *parg);
+	long (*ssl_ctx_ctrl)(SSL_CTX *ctx,int cmd,long larg,void *parg);
+	const SSL_CIPHER *(*get_cipher_by_char)(const unsigned char *ptr);
+	int (*put_cipher_by_char)(const SSL_CIPHER *cipher,unsigned char *ptr);
+	int (*ssl_pending)(const SSL *s);
+	int (*num_ciphers)(void);
+	const SSL_CIPHER *(*get_cipher)(unsigned ncipher);
+	const struct ssl_method_st *(*get_ssl_method)(int version);
+	long (*get_timeout)(void);
+	struct ssl3_enc_method *ssl3_enc; /* Extra SSLv3/TLS stuff */
+	int (*ssl_version)(void);
+	long (*ssl_callback_ctrl)(SSL *s, int cb_id, void (*fp)(void));
+	long (*ssl_ctx_callback_ctrl)(SSL_CTX *s, int cb_id, void (*fp)(void));
+
+2. cert_store
+	int (*verify)(X509_STORE_CTX *ctx);	/* called to verify a certificate */
+	int (*verify_cb)(int ok,X509_STORE_CTX *ctx);	/* error callback */
+	int (*get_issuer)(X509 **issuer, X509_STORE_CTX *ctx, X509 *x);	/* get issuers cert from ctx */
+	int (*check_issued)(X509_STORE_CTX *ctx, X509 *x, X509 *issuer); /* check issued */
+	int (*check_revocation)(X509_STORE_CTX *ctx); /* Check revocation status of chain */
+	int (*get_crl)(X509_STORE_CTX *ctx, X509_CRL **crl, X509 *x); /* retrieve CRL */
+	int (*check_crl)(X509_STORE_CTX *ctx, X509_CRL *crl); /* Check CRL validity */
+	int (*cert_crl)(X509_STORE_CTX *ctx, X509_CRL *crl, X509 *x); /* Check certificate against CRL */
+	STACK_OF(X509) * (*lookup_certs)(X509_STORE_CTX *ctx, X509_NAME *nm);
+	STACK_OF(X509_CRL) * (*lookup_crls)(X509_STORE_CTX *ctx, X509_NAME *nm);
+	int (*cleanup)(X509_STORE_CTX *ctx);
+
+3. int (*new_session_cb)(struct ssl_st *ssl,SSL_SESSION *sess);
+
+4. void (*remove_session_cb)(struct ssl_ctx_st *ctx,SSL_SESSION *sess);
+
+5. SSL_SESSION *(*get_session_cb)(struct ssl_st *ssl, unsigned char *data,int len,int *copy);
+
+6. int (*app_verify_callback)(X509_STORE_CTX *, void *);
+
+7. pem_password_cb *default_passwd_callback;
+
+8. int (*client_cert_cb)(SSL *ssl, X509 **x509, EVP_PKEY **pkey);
+
+9. int (*app_gen_cookie_cb)(SSL *ssl, unsigned char *cookie, unsigned int *cookie_len);
+
+10. int (*app_verify_cookie_cb)(SSL *ssl, unsigned char *cookie, unsigned int cookie_len);
+
+11. rsa_md5
+	int (*init)(EVP_MD_CTX *ctx);
+	int (*update)(EVP_MD_CTX *ctx,const void *data,size_t count);
+	int (*final)(EVP_MD_CTX *ctx,unsigned char *md);
+	int (*copy)(EVP_MD_CTX *to,const EVP_MD_CTX *from);
+	int (*cleanup)(EVP_MD_CTX *ctx);
+	int (*sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, void *key);
+	int (*verify)(int type, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, void *key);
+	int (*md_ctrl)(EVP_MD_CTX *ctx, int cmd, int p1, void *p2);
+
+12. md5
+	int (*init)(EVP_MD_CTX *ctx);
+	int (*update)(EVP_MD_CTX *ctx,const void *data,size_t count);
+	int (*final)(EVP_MD_CTX *ctx,unsigned char *md);
+	int (*copy)(EVP_MD_CTX *to,const EVP_MD_CTX *from);
+	int (*cleanup)(EVP_MD_CTX *ctx);
+	int (*sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, void *key);
+	int (*verify)(int type, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, void *key);
+	int (*md_ctrl)(EVP_MD_CTX *ctx, int cmd, int p1, void *p2);
+
+13. sha1
+	int (*init)(EVP_MD_CTX *ctx);
+	int (*update)(EVP_MD_CTX *ctx,const void *data,size_t count);
+	int (*final)(EVP_MD_CTX *ctx,unsigned char *md);
+	int (*copy)(EVP_MD_CTX *to,const EVP_MD_CTX *from);
+	int (*cleanup)(EVP_MD_CTX *ctx);
+	int (*sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, void *key);
+	int (*verify)(int type, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, void *key);
+	int (*md_ctrl)(EVP_MD_CTX *ctx, int cmd, int p1, void *p2);
+
+14. void (*info_callback)(const SSL *ssl,int type,int val);
+
+15. 

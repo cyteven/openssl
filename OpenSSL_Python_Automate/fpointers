@@ -1,0 +1,273 @@
+1. method
+	int (*ssl_new)(SSL *s);
+	void (*ssl_clear)(SSL *s);
+	void (*ssl_free)(SSL *s);
+	int (*ssl_accept)(SSL *s);
+	int (*ssl_connect)(SSL *s);
+	int (*ssl_read)(SSL *s,void *buf,int len);
+	int (*ssl_peek)(SSL *s,void *buf,int len);
+	int (*ssl_write)(SSL *s,const void *buf,int len);
+	int (*ssl_shutdown)(SSL *s);
+	int (*ssl_renegotiate)(SSL *s);
+	int (*ssl_renegotiate_check)(SSL *s);
+	long (*ssl_get_message)(SSL *s, int st1, int stn, int mt, long max, int *ok);
+	int (*ssl_read_bytes)(SSL *s, int type, unsigned char *buf, int len, int peek);
+	int (*ssl_write_bytes)(SSL *s, int type, const void *buf_, int len);
+	int (*ssl_dispatch_alert)(SSL *s);
+	long (*ssl_ctrl)(SSL *s,int cmd,long larg,void *parg);
+	long (*ssl_ctx_ctrl)(SSL_CTX *ctx,int cmd,long larg,void *parg);
+	const SSL_CIPHER *(*get_cipher_by_char)(const unsigned char *ptr);
+	int (*put_cipher_by_char)(const SSL_CIPHER *cipher,unsigned char *ptr);
+	int (*ssl_pending)(const SSL *s);
+	int (*num_ciphers)(void);
+	const SSL_CIPHER *(*get_cipher)(unsigned ncipher);
+	const struct ssl_method_st *(*get_ssl_method)(int version);
+	long (*get_timeout)(void);
+	struct ssl3_enc_method *ssl3_enc; /* Extra SSLv3/TLS stuff */
+	int (*ssl_version)(void);
+	long (*ssl_callback_ctrl)(SSL *s, int cb_id, void (*fp)(void));
+	long (*ssl_ctx_callback_ctrl)(SSL_CTX *s, int cb_id, void (*fp)(void));
+
+2. cert_store
+	int (*verify)(X509_STORE_CTX *ctx);	/* called to verify a certificate */
+	int (*verify_cb)(int ok,X509_STORE_CTX *ctx);	/* error callback */
+	int (*get_issuer)(X509 **issuer, X509_STORE_CTX *ctx, X509 *x);	/* get issuers cert from ctx */
+	int (*check_issued)(X509_STORE_CTX *ctx, X509 *x, X509 *issuer); /* check issued */
+	int (*check_revocation)(X509_STORE_CTX *ctx); /* Check revocation status of chain */
+	int (*get_crl)(X509_STORE_CTX *ctx, X509_CRL **crl, X509 *x); /* retrieve CRL */
+	int (*check_crl)(X509_STORE_CTX *ctx, X509_CRL *crl); /* Check CRL validity */
+	int (*cert_crl)(X509_STORE_CTX *ctx, X509_CRL *crl, X509 *x); /* Check certificate against CRL */
+	STACK_OF(X509) * (*lookup_certs)(X509_STORE_CTX *ctx, X509_NAME *nm);
+	STACK_OF(X509_CRL) * (*lookup_crls)(X509_STORE_CTX *ctx, X509_NAME *nm);
+	int (*cleanup)(X509_STORE_CTX *ctx);
+
+3. int (*new_session_cb)(struct ssl_st *ssl,SSL_SESSION *sess);
+
+4. void (*remove_session_cb)(struct ssl_ctx_st *ctx,SSL_SESSION *sess);
+
+5. SSL_SESSION *(*get_session_cb)(struct ssl_st *ssl, unsigned char *data,int len,int *copy);
+
+6. int (*app_verify_callback)(X509_STORE_CTX *, void *);
+
+7. pem_password_cb *default_passwd_callback
+
+8. int (*client_cert_cb)(SSL *ssl, X509 **x509, EVP_PKEY **pkey);
+
+9. int (*app_gen_cookie_cb)(SSL *ssl, unsigned char *cookie, unsigned int *cookie_len);
+
+10. int (*app_verify_cookie_cb)(SSL *ssl, unsigned char *cookie, unsigned int cookie_len);
+
+11. rsa_md5
+	int (*init)(EVP_MD_CTX *ctx);
+	int (*update)(EVP_MD_CTX *ctx,const void *data,size_t count);
+	int (*final)(EVP_MD_CTX *ctx,unsigned char *md);
+	int (*copy)(EVP_MD_CTX *to,const EVP_MD_CTX *from);
+	int (*cleanup)(EVP_MD_CTX *ctx);
+	int (*sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, void *key);
+	int (*verify)(int type, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, void *key);
+	int (*md_ctrl)(EVP_MD_CTX *ctx, int cmd, int p1, void *p2);
+
+12. md5
+	int (*init)(EVP_MD_CTX *ctx);
+	int (*update)(EVP_MD_CTX *ctx,const void *data,size_t count);
+	int (*final)(EVP_MD_CTX *ctx,unsigned char *md);
+	int (*copy)(EVP_MD_CTX *to,const EVP_MD_CTX *from);
+	int (*cleanup)(EVP_MD_CTX *ctx);
+	int (*sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, void *key);
+	int (*verify)(int type, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, void *key);
+	int (*md_ctrl)(EVP_MD_CTX *ctx, int cmd, int p1, void *p2);
+
+13. sha1
+	int (*init)(EVP_MD_CTX *ctx);
+	int (*update)(EVP_MD_CTX *ctx,const void *data,size_t count);
+	int (*final)(EVP_MD_CTX *ctx,unsigned char *md);
+	int (*copy)(EVP_MD_CTX *to,const EVP_MD_CTX *from);
+	int (*cleanup)(EVP_MD_CTX *ctx);
+	int (*sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, void *key);
+	int (*verify)(int type, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, void *key);
+	int (*md_ctrl)(EVP_MD_CTX *ctx, int cmd, int p1, void *p2);
+
+14. void (*info_callback)(const SSL *ssl,int type,int val); 	
+
+15. void (*msg_callback)(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg);
+
+16. int (*default_verify_callback)(int ok,X509_STORE_CTX *ctx);
+
+18. int (*tlsext_servername_callback)(SSL*, int *, void *);
+
+19. int (*tlsext_ticket_key_cb)(SSL *ssl, unsigned char *name, unsigned char *iv, EVP_CIPHER_CTX *ectx,	HMAC_CTX *hctx, int enc);
+
+20. int (*tlsext_status_cb)(SSL *ssl, void *arg);
+
+21. int (*tlsext_opaque_prf_input_callback)(SSL *, void *peerinput, size_t len, void *arg);
+
+22. unsigned int (*psk_client_callback)(SSL *ssl, const char *hint, char *identity, unsigned int max_identity_len, unsigned char *psk, unsigned int max_psk_len);
+
+23. unsigned int (*psk_server_callback)(SSL *ssl, const char *identity,	unsigned char *psk, unsigned int max_psk_len);
+
+24. srp_ctx
+	int (*TLS_ext_srp_username_callback)(SSL *, int *, void *);
+	int (*SRP_verify_param_callback)(SSL *, void *);
+	char *(*SRP_give_srp_client_pwd_callback)(SSL *, void *);
+
+25. int (*next_protos_advertised_cb)(SSL *s, const unsigned char **buf, unsigned int *len, void *arg);
+
+26. int (*next_proto_select_cb)(SSL *s, unsigned char **out, unsigned char *outlen, const unsigned char *in, unsigned int inlen, void *arg);
+
+17. client_cert_engine
+	rsa_meth
+		int (*rsa_pub_enc)(int flen,const unsigned char *from,unsigned char *to, RSA *rsa,int padding);
+		int (*rsa_pub_dec)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+		int (*rsa_priv_enc)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+		int (*rsa_priv_dec)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+		int (*rsa_mod_exp)(BIGNUM *r0,const BIGNUM *I,RSA *rsa,BN_CTX *ctx);
+		int (*bn_mod_exp)(BIGNUM *r, const BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+		int (*init)(RSA *rsa);
+		int (*finish)(RSA *rsa);
+		int (*rsa_sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
+		int (*rsa_verify)(int dtype, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, const RSA *rsa);
+		int (*rsa_keygen)(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
+
+	dsa_meth
+		DSA_SIG * (*dsa_do_sign)(const unsigned char *dgst, int dlen, DSA *dsa);
+		int (*dsa_sign_setup)(DSA *dsa, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+		int (*dsa_do_verify)(const unsigned char *dgst, int dgst_len, DSA_SIG *sig, DSA *dsa);
+		int (*dsa_mod_exp)(DSA *dsa, BIGNUM *rr, BIGNUM *a1, BIGNUM *p1, BIGNUM *a2, BIGNUM *p2, BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *in_mont);
+		int (*bn_mod_exp)(DSA *dsa, BIGNUM *r, BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+		int (*init)(DSA *dsa);
+		int (*finish)(DSA *dsa);
+		int (*dsa_paramgen)(DSA *dsa, int bits, const unsigned char *seed, int seed_len, int *counter_ret, unsigned long *h_ret, BN_GENCB *cb);
+		int (*dsa_keygen)(DSA *dsa);
+
+	dh_meth
+		int (*generate_key)(DH *dh);
+		int (*compute_key)(unsigned char *key,const BIGNUM *pub_key,DH *dh);
+		int (*bn_mod_exp)(const DH *dh, BIGNUM *r, const BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+		int (*init)(DH *dh);
+		int (*finish)(DH *dh);
+		int (*generate_params)(DH *dh, int prime_len, int generator, BN_GENCB *cb);
+
+	ecdh_meth
+		int (*compute_key)(void *key, size_t outlen, const EC_POINT *pub_key, EC_KEY *ecdh, void *(*KDF)(const void *in, size_t inlen, void *out, size_t *outlen));
+		int (*init)(EC_KEY *eckey);
+		int (*finish)(EC_KEY *eckey);
+
+	ecdsa_meth
+		ECDSA_SIG *(*ecdsa_do_sign)(const unsigned char *dgst, int dgst_len, const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
+		int (*ecdsa_sign_setup)(EC_KEY *eckey, BN_CTX *ctx, BIGNUM **kinv, BIGNUM **r);
+		int (*ecdsa_do_verify)(const unsigned char *dgst, int dgst_len, const ECDSA_SIG *sig, EC_KEY *eckey);
+		int (*init)(EC_KEY *eckey);
+		int (*finish)(EC_KEY *eckey);
+
+	rand_meth
+		void (*seed)(const void *buf, int num);
+		int (*bytes)(unsigned char *buf, int num);
+		void (*cleanup)(void);
+		void (*add)(const void *buf, int num, double entropy);
+		int (*pseudorand)(unsigned char *buf, int num);
+		int (*status)(void);
+	prev
+		rsa_meth
+			int (*rsa_pub_enc)(int flen,const unsigned char *from,unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_pub_dec)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_priv_enc)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_priv_dec)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_mod_exp)(BIGNUM *r0,const BIGNUM *I,RSA *rsa,BN_CTX *ctx);
+			int (*bn_mod_exp)(BIGNUM *r, const BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+			int (*init)(RSA *rsa);
+			int (*finish)(RSA *rsa);
+			int (*rsa_sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
+			int (*rsa_verify)(int dtype, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, const RSA *rsa);
+			int (*rsa_keygen)(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
+
+		dsa_meth
+			DSA_SIG * (*dsa_do_sign)(const unsigned char *dgst, int dlen, DSA *dsa);
+			int (*dsa_sign_setup)(DSA *dsa, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+			int (*dsa_do_verify)(const unsigned char *dgst, int dgst_len, DSA_SIG *sig, DSA *dsa);
+			int (*dsa_mod_exp)(DSA *dsa, BIGNUM *rr, BIGNUM *a1, BIGNUM *p1, BIGNUM *a2, BIGNUM *p2, BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *in_mont);
+			int (*bn_mod_exp)(DSA *dsa, BIGNUM *r, BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+			int (*init)(DSA *dsa);
+			int (*finish)(DSA *dsa);
+			int (*dsa_paramgen)(DSA *dsa, int bits, const unsigned char *seed, int seed_len, int *counter_ret, unsigned long *h_ret, BN_GENCB *cb);
+			int (*dsa_keygen)(DSA *dsa);
+
+		dh_meth
+			int (*generate_key)(DH *dh);
+			int (*compute_key)(unsigned char *key,const BIGNUM *pub_key,DH *dh);
+			int (*bn_mod_exp)(const DH *dh, BIGNUM *r, const BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+			int (*init)(DH *dh);
+			int (*finish)(DH *dh);
+			int (*generate_params)(DH *dh, int prime_len, int generator, BN_GENCB *cb);
+
+		ecdh_meth
+			int (*compute_key)(void *key, size_t outlen, const EC_POINT *pub_key, EC_KEY *ecdh, void *(*KDF)(const void *in, size_t inlen, void *out, size_t *outlen));
+			int (*init)(EC_KEY *eckey);
+			int (*finish)(EC_KEY *eckey);
+
+		ecdsa_meth
+			ECDSA_SIG *(*ecdsa_do_sign)(const unsigned char *dgst, int dgst_len, const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
+			int (*ecdsa_sign_setup)(EC_KEY *eckey, BN_CTX *ctx, BIGNUM **kinv, BIGNUM **r);
+			int (*ecdsa_do_verify)(const unsigned char *dgst, int dgst_len, const ECDSA_SIG *sig, EC_KEY *eckey);
+			int (*init)(EC_KEY *eckey);
+			int (*finish)(EC_KEY *eckey);
+
+		rand_meth
+			void (*seed)(const void *buf, int num);
+			int (*bytes)(unsigned char *buf, int num);
+			void (*cleanup)(void);
+			void (*add)(const void *buf, int num, double entropy);
+			int (*pseudorand)(unsigned char *buf, int num);
+			int (*status)(void);
+
+	next
+		rsa_meth
+			int (*rsa_pub_enc)(int flen,const unsigned char *from,unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_pub_dec)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_priv_enc)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_priv_dec)(int flen,const unsigned char *from, unsigned char *to, RSA *rsa,int padding);
+			int (*rsa_mod_exp)(BIGNUM *r0,const BIGNUM *I,RSA *rsa,BN_CTX *ctx);
+			int (*bn_mod_exp)(BIGNUM *r, const BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+			int (*init)(RSA *rsa);
+			int (*finish)(RSA *rsa);
+			int (*rsa_sign)(int type, const unsigned char *m, unsigned int m_length, unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
+			int (*rsa_verify)(int dtype, const unsigned char *m, unsigned int m_length, const unsigned char *sigbuf, unsigned int siglen, const RSA *rsa);
+			int (*rsa_keygen)(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
+
+		dsa_meth
+			DSA_SIG * (*dsa_do_sign)(const unsigned char *dgst, int dlen, DSA *dsa);
+			int (*dsa_sign_setup)(DSA *dsa, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+			int (*dsa_do_verify)(const unsigned char *dgst, int dgst_len, DSA_SIG *sig, DSA *dsa);
+			int (*dsa_mod_exp)(DSA *dsa, BIGNUM *rr, BIGNUM *a1, BIGNUM *p1, BIGNUM *a2, BIGNUM *p2, BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *in_mont);
+			int (*bn_mod_exp)(DSA *dsa, BIGNUM *r, BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);
+			int (*init)(DSA *dsa);
+			int (*finish)(DSA *dsa);
+			int (*dsa_paramgen)(DSA *dsa, int bits, const unsigned char *seed, int seed_len, int *counter_ret, unsigned long *h_ret, BN_GENCB *cb);
+			int (*dsa_keygen)(DSA *dsa);
+
+		dh_meth
+			int (*generate_key)(DH *dh);
+			int (*compute_key)(unsigned char *key,const BIGNUM *pub_key,DH *dh);
+			int (*bn_mod_exp)(const DH *dh, BIGNUM *r, const BIGNUM *a, const BIGNUM *p, const BIGNUM *m, BN_CTX *ctx, BN_MONT_CTX *m_ctx);	
+			int (*init)(DH *dh);
+			int (*finish)(DH *dh);
+			int (*generate_params)(DH *dh, int prime_len, int generator, BN_GENCB *cb);
+
+		ecdh_meth
+			int (*compute_key)(void *key, size_t outlen, const EC_POINT *pub_key, EC_KEY *ecdh, void *(*KDF)(const void *in, size_t inlen, void *out, size_t *outlen));
+			int (*init)(EC_KEY *eckey);
+			int (*finish)(EC_KEY *eckey);
+
+		ecdsa_meth
+			ECDSA_SIG *(*ecdsa_do_sign)(const unsigned char *dgst, int dgst_len, const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
+			int (*ecdsa_sign_setup)(EC_KEY *eckey, BN_CTX *ctx, BIGNUM **kinv, BIGNUM **r);
+			int (*ecdsa_do_verify)(const unsigned char *dgst, int dgst_len, const ECDSA_SIG *sig, EC_KEY *eckey);
+			int (*init)(EC_KEY *eckey);
+			int (*finish)(EC_KEY *eckey);
+
+		rand_meth
+			void (*seed)(const void *buf, int num);
+			int (*bytes)(unsigned char *buf, int num);
+			void (*cleanup)(void);
+			void (*add)(const void *buf, int num, double entropy);
+			int (*pseudorand)(unsigned char *buf, int num);
+			int (*status)(void);
