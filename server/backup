@@ -22,7 +22,7 @@ num_ciphers 4228224
 get_cipher 4228240
 get_ssl_method 4206192
 get_timeout 4228208
-ssl_version 4316560
+ssl_version 4316544
 ssl_callback_ctrl 4231008
 ssl_ctx_callback_ctrl 4232576
 verify 0
@@ -81,4 +81,3 @@ SRP_verify_param_callback 0
 SRP_give_srp_client_pwd_callback 0
 next_protos_advertised_cb 0
 next_proto_select_cb 0
-rsa_pub_enc 0
