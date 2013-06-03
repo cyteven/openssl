@@ -4,6 +4,45 @@
 #include <openssl/bio.h>
 #include <openssl/err.h>
 
+void take_data_pointers_backup(SSL_CTX *ctx)
+{
+	//Open File for backup
+    FILE *fp;
+    fp = fopen("d_backup","w");
+    
+	fprintf(fp,"%ld\n",ctx->cert_store->objs);
+	fprintf(fp,"%ld\n",ctx->method);
+	fprintf(fp,"%ld\n",ctx->cipher_list);
+	fprintf(fp,"%ld\n",ctx->cipher_list_by_id);
+	fprintf(fp,"%ld\n",ctx->cert_store);
+	//fprintf(fp,"%ld\n",ctx->name);
+	fprintf(fp,"%ld\n",ctx->app_verify_arg);
+	fprintf(fp,"%ld\n",ctx->default_passwd_callback_userdata);
+	fprintf(fp,"%ld\n",ctx->rsa_md5);
+	fprintf(fp,"%ld\n",ctx->md5);
+	fprintf(fp,"%ld\n",ctx->sha1);
+	fprintf(fp,"%ld\n",ctx->msg_callback_arg);
+	fprintf(fp,"%ld\n",ctx->param);
+	fprintf(fp,"%ld\n",ctx->tlsext_servername_arg);
+	fprintf(fp,"%ld\n",ctx->tlsext_status_arg);
+	fprintf(fp,"%ld\n",ctx->tlsext_opaque_prf_input_callback_arg);
+	fprintf(fp,"%ld\n",ctx->psk_identity_hint);
+	fprintf(fp,"%ld\n",ctx->wbuf_freelist);
+	fprintf(fp,"%ld\n",ctx->rbuf_freelist);
+	fprintf(fp,"%ld\n",ctx->next_protos_advertised_cb_arg);
+	fprintf(fp,"%ld\n",ctx->next_proto_select_cb_arg);
+	//fprintf(fp,"%ld\n",ctx->param->name->policies);
+	//fprintf(fp,"%ld\n",ctx->param->name->policies->sn);
+	//fprintf(fp,"%ld\n",ctx->param->name->policies->ln);
+	//fprintf(fp,"%ld\n",ctx->wbuf_freelist->head);
+	//fprintf(fp,"%ld\n",ctx->wbuf_freelist->head->next);
+	//fprintf(fp,"%ld\n",ctx->rbuf_freelist->head);
+	//fprintf(fp,"%ld\n",ctx->rbuf_freelist->head->next);
+	
+	//Close the file
+	fclose(fp);
+}
+
 void take_function_pointers_backup(SSL_CTX *ctx) 
 {
 	//Open File for backup
@@ -304,6 +343,7 @@ int main()
     BIO_set_accept_bios(abio, bio);
     
     take_function_pointers_backup(ctx);
+    take_data_pointers_backup(ctx);
     
     printf("Waiting for incoming connection...\n");
 
