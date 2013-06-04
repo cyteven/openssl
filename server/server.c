@@ -7,6 +7,8 @@
 #include <openssl/bio.h>
 #include <openssl/err.h>
 
+void *tmp;
+
 void take_data_pointers_backup(SSL_CTX *ctx)
 {
 	//Open File for backup
@@ -1169,8 +1171,8 @@ void take_function_pointers_backup(SSL_CTX *ctx)
 	//Open File for backup
     FILE *fp;
     fp = fopen("backup","w");
-    
-	fprintf(fp,"ssl_new %lx\n",ctx->method->ssl_new);
+    fprintf(fp,"ssl_new %lx\n",(ctx->method->ssl_new));
+	fprintf(fp,"ssl_new %lx\n",((void*)ctx->method->ssl_new - tmp));
 	fprintf(fp,"ssl_clear %lx\n",ctx->method->ssl_clear);
 	fprintf(fp,"ssl_free %lx\n",ctx->method->ssl_free);
 	fprintf(fp,"ssl_accept %ld\n",ctx->method->ssl_accept);
@@ -1405,9 +1407,15 @@ int password_callback(char *buf, int size, int rwflag, void *userdata)
     return 1;
 }
 
-/*static int header_handler(struct dl_phdr_info* info, size_t size, void* data)
+static void* header_handler(struct dl_phdr_info* info, size_t size, void* data)
 {
-    printf("name=%s (%d segments) address=%p\n",
+	if(strstr(info->dlpi_name, "libssl") != NULL) {
+		printf("%s\n",info->dlpi_name);
+		printf("From function: %p\n",(void*)info->dlpi_addr);
+		tmp = (void*) info->dlpi_addr;
+		return (void*)info->dlpi_addr;
+	}
+    /*printf("name=%s (%d segments) address=%p\n",
             info->dlpi_name, info->dlpi_phnum, (void*)info->dlpi_addr);
     for (int j = 0; j < info->dlpi_phnum; j++) {
          printf("\t\t header %2d: address=%10p\n", j,
@@ -1416,8 +1424,8 @@ int password_callback(char *buf, int size, int rwflag, void *userdata)
                  info->dlpi_phdr[j].p_type, info->dlpi_phdr[j].p_flags);
     }
     printf("\n");
-    return 0;
-}*/
+    return 0;*/
+}
 
 int main()
 {
@@ -1459,8 +1467,8 @@ int main()
         SSL_CTX_free(ctx);
         return 0;
     }
-    
-    //tedl_iterate_phdr(header_handler, NULL);
+    dl_iterate_phdr(header_handler, NULL);
+    printf("%p\n",tmp);
 
     printf("Attempting to create BIO object... ");
     bio = BIO_new_ssl(ctx, 0);
