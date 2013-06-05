@@ -5,10 +5,13 @@ def get_function_name(st):
     return m.group(1)
 
 def write_to_file(fp, content, current):
+    #fprintf(fp,"ssl_new %lx\n",((void*)ctx->method->ssl_new - tmp));
     if current != '':
-        fp.write('fprintf(fp,"'+ content +' %ld\\n",ctx->'+current+'->'+content+');\n')
+        fp.write('if(ctx->'+current+'->'+content+' != 0) \n \t fprintf(fp,"'+ content +' %lx\\n",(void*)ctx->'+current+'->'+content+'-tmp);\n'+
+                 'else \n \t fprintf(fp,"'+content+' 0\\n");\n') 
     else:
-        fp.write('fprintf(fp,"'+ content +' %ld\\n",ctx->'+content+');\n')
+        fp.write('if(ctx->'+content+' != 0) \n \t fprintf(fp,"'+ content +' %lx\\n",(void*)ctx->'+content+'-tmp);\n'+
+                 'else \n \t fprintf(fp,"'+content+' 0\\n");\n')
     
 def  main():
     fp = open("fpointers")

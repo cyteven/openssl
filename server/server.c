@@ -1171,229 +1171,840 @@ void take_function_pointers_backup(SSL_CTX *ctx)
 	//Open File for backup
     FILE *fp;
     fp = fopen("backup","w");
-    fprintf(fp,"ssl_new %lx\n",(ctx->method->ssl_new));
-	fprintf(fp,"ssl_new %lx\n",((void*)ctx->method->ssl_new - tmp));
-	fprintf(fp,"ssl_clear %lx\n",ctx->method->ssl_clear);
-	fprintf(fp,"ssl_free %lx\n",ctx->method->ssl_free);
-	fprintf(fp,"ssl_accept %ld\n",ctx->method->ssl_accept);
-	fprintf(fp,"ssl_connect %ld\n",ctx->method->ssl_connect);
-	fprintf(fp,"ssl_read %ld\n",ctx->method->ssl_read);
-	fprintf(fp,"ssl_peek %ld\n",ctx->method->ssl_peek);
-	fprintf(fp,"ssl_write %ld\n",ctx->method->ssl_write);
-	fprintf(fp,"ssl_shutdown %ld\n",ctx->method->ssl_shutdown);
-	fprintf(fp,"ssl_renegotiate %ld\n",ctx->method->ssl_renegotiate);
-	fprintf(fp,"ssl_renegotiate_check %ld\n",ctx->method->ssl_renegotiate_check);
-	fprintf(fp,"ssl_get_message %ld\n",ctx->method->ssl_get_message);
-	fprintf(fp,"ssl_read_bytes %ld\n",ctx->method->ssl_read_bytes);
-	fprintf(fp,"ssl_write_bytes %ld\n",ctx->method->ssl_write_bytes);
-	fprintf(fp,"ssl_dispatch_alert %ld\n",ctx->method->ssl_dispatch_alert);
-	fprintf(fp,"ssl_ctrl %ld\n",ctx->method->ssl_ctrl);
-	fprintf(fp,"ssl_ctx_ctrl %ld\n",ctx->method->ssl_ctx_ctrl);
-	fprintf(fp,"get_cipher_by_char %ld\n",ctx->method->get_cipher_by_char);
-	fprintf(fp,"put_cipher_by_char %ld\n",ctx->method->put_cipher_by_char);
-	fprintf(fp,"ssl_pending %ld\n",ctx->method->ssl_pending);
-	fprintf(fp,"num_ciphers %ld\n",ctx->method->num_ciphers);
-	fprintf(fp,"get_cipher %ld\n",ctx->method->get_cipher);
-	fprintf(fp,"get_ssl_method %ld\n",ctx->method->get_ssl_method);
-	fprintf(fp,"get_timeout %ld\n",ctx->method->get_timeout);
-	fprintf(fp,"ssl_version %ld\n",ctx->method->ssl_version);
-	fprintf(fp,"ssl_callback_ctrl %ld\n",ctx->method->ssl_callback_ctrl);
-	fprintf(fp,"ssl_ctx_callback_ctrl %ld\n",ctx->method->ssl_ctx_callback_ctrl);
-	fprintf(fp,"verify %ld\n",ctx->cert_store->verify);
-	fprintf(fp,"verify_cb %ld\n",ctx->cert_store->verify_cb);
-	fprintf(fp,"get_issuer %ld\n",ctx->cert_store->get_issuer);
-	fprintf(fp,"check_issued %ld\n",ctx->cert_store->check_issued);
-	fprintf(fp,"check_revocation %ld\n",ctx->cert_store->check_revocation);
-	fprintf(fp,"get_crl %ld\n",ctx->cert_store->get_crl);
-	fprintf(fp,"check_crl %ld\n",ctx->cert_store->check_crl);
-	fprintf(fp,"cert_crl %ld\n",ctx->cert_store->cert_crl);
-	fprintf(fp,"lookup_certs %ld\n",ctx->cert_store->lookup_certs);
-	fprintf(fp,"lookup_crls %ld\n",ctx->cert_store->lookup_crls);
-	fprintf(fp,"cleanup %ld\n",ctx->cert_store->cleanup);
-	fprintf(fp,"new_session_cb %ld\n",ctx->new_session_cb);
-	fprintf(fp,"remove_session_cb %ld\n",ctx->remove_session_cb);
-	fprintf(fp,"get_session_cb %ld\n",ctx->get_session_cb);
-	fprintf(fp,"app_verify_callback %ld\n",ctx->app_verify_callback);
-	fprintf(fp,"client_cert_cb %ld\n",ctx->client_cert_cb);
-	fprintf(fp,"app_gen_cookie_cb %ld\n",ctx->app_gen_cookie_cb);
-	fprintf(fp,"app_verify_cookie_cb %ld\n",ctx->app_verify_cookie_cb);
-	fprintf(fp,"init %ld\n",ctx->rsa_md5->init);
-	fprintf(fp,"update %ld\n",ctx->rsa_md5->update);
-	fprintf(fp,"final %ld\n",ctx->rsa_md5->final);
-	fprintf(fp,"copy %ld\n",ctx->rsa_md5->copy);
-	fprintf(fp,"cleanup %ld\n",ctx->rsa_md5->cleanup);
-	fprintf(fp,"sign %ld\n",ctx->rsa_md5->sign);
-	fprintf(fp,"verify %ld\n",ctx->rsa_md5->verify);
-	fprintf(fp,"md_ctrl %ld\n",ctx->rsa_md5->md_ctrl);
-	fprintf(fp,"init %ld\n",ctx->md5->init);
-	fprintf(fp,"update %ld\n",ctx->md5->update);
-	fprintf(fp,"final %ld\n",ctx->md5->final);
-	fprintf(fp,"copy %ld\n",ctx->md5->copy);
-	fprintf(fp,"cleanup %ld\n",ctx->md5->cleanup);
-	fprintf(fp,"sign %ld\n",ctx->md5->sign);
-	fprintf(fp,"verify %ld\n",ctx->md5->verify);
-	fprintf(fp,"md_ctrl %ld\n",ctx->md5->md_ctrl);
-	fprintf(fp,"init %ld\n",ctx->sha1->init);
-	fprintf(fp,"update %ld\n",ctx->sha1->update);
-	fprintf(fp,"final %ld\n",ctx->sha1->final);
-	fprintf(fp,"copy %ld\n",ctx->sha1->copy);
-	fprintf(fp,"cleanup %ld\n",ctx->sha1->cleanup);
-	fprintf(fp,"sign %ld\n",ctx->sha1->sign);
-	fprintf(fp,"verify %ld\n",ctx->sha1->verify);
-	fprintf(fp,"md_ctrl %ld\n",ctx->sha1->md_ctrl);
-	fprintf(fp,"info_callback %ld\n",ctx->info_callback);
-	fprintf(fp,"msg_callback %ld\n",ctx->msg_callback);
-	fprintf(fp,"default_verify_callback %ld\n",ctx->default_verify_callback);
-	fprintf(fp,"tlsext_servername_callback %ld\n",ctx->tlsext_servername_callback);
-	fprintf(fp,"tlsext_ticket_key_cb %ld\n",ctx->tlsext_ticket_key_cb);
-	fprintf(fp,"tlsext_status_cb %ld\n",ctx->tlsext_status_cb);
-	fprintf(fp,"tlsext_opaque_prf_input_callback %ld\n",ctx->tlsext_opaque_prf_input_callback);
-	fprintf(fp,"psk_client_callback %ld\n",ctx->psk_client_callback);
-	fprintf(fp,"psk_server_callback %ld\n",ctx->psk_server_callback);
-	fprintf(fp,"TLS_ext_srp_username_callback %ld\n",ctx->srp_ctx.TLS_ext_srp_username_callback);
-	fprintf(fp,"SRP_verify_param_callback %ld\n",ctx->srp_ctx.SRP_verify_param_callback);
-	fprintf(fp,"SRP_give_srp_client_pwd_callback %ld\n",ctx->srp_ctx.SRP_give_srp_client_pwd_callback);
-	fprintf(fp,"next_protos_advertised_cb %ld\n",ctx->next_protos_advertised_cb);
-	fprintf(fp,"next_proto_select_cb %ld\n",ctx->next_proto_select_cb);
-	/*fprintf(fp,"%ld",ctx->client_cert_engine->name);
-	fprintf(fp,"rsa_pub_dec %ld\n",ctx->client_cert_engine->rsa_meth->rsa_pub_dec);
-	fprintf(fp,"rsa_priv_enc %ld\n",ctx->client_cert_engine->rsa_meth->rsa_priv_enc);
-	fprintf(fp,"rsa_priv_dec %ld\n",ctx->client_cert_engine->rsa_meth->rsa_priv_dec);
-	fprintf(fp,"rsa_mod_exp %ld\n",ctx->client_cert_engine->rsa_meth->rsa_mod_exp);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->rsa_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->rsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->rsa_meth->finish);
-	fprintf(fp,"rsa_sign %ld\n",ctx->client_cert_engine->rsa_meth->rsa_sign);
-	fprintf(fp,"rsa_verify %ld\n",ctx->client_cert_engine->rsa_meth->rsa_verify);
-	fprintf(fp,"rsa_keygen %ld\n",ctx->client_cert_engine->rsa_meth->rsa_keygen);
+    
+	if(ctx->method->ssl_new != 0) 
+ 	 fprintf(fp,"ssl_new %lx\n",(void*)ctx->method->ssl_new-tmp);
+	else 
+		 fprintf(fp,"ssl_new 0\n");
+	if(ctx->method->ssl_clear != 0) 
+		 fprintf(fp,"ssl_clear %lx\n",(void*)ctx->method->ssl_clear-tmp);
+	else 
+		 fprintf(fp,"ssl_clear 0\n");
+	if(ctx->method->ssl_free != 0) 
+		 fprintf(fp,"ssl_free %lx\n",(void*)ctx->method->ssl_free-tmp);
+	else 
+		 fprintf(fp,"ssl_free 0\n");
+	if(ctx->method->ssl_accept != 0) 
+		 fprintf(fp,"ssl_accept %lx\n",(void*)ctx->method->ssl_accept-tmp);
+	else 
+		 fprintf(fp,"ssl_accept 0\n");
+	if(ctx->method->ssl_connect != 0) 
+		 fprintf(fp,"ssl_connect %lx\n",(void*)ctx->method->ssl_connect-tmp);
+	else 
+		 fprintf(fp,"ssl_connect 0\n");
+	if(ctx->method->ssl_read != 0) 
+		 fprintf(fp,"ssl_read %lx\n",(void*)ctx->method->ssl_read-tmp);
+	else 
+		 fprintf(fp,"ssl_read 0\n");
+	if(ctx->method->ssl_peek != 0) 
+		 fprintf(fp,"ssl_peek %lx\n",(void*)ctx->method->ssl_peek-tmp);
+	else 
+		 fprintf(fp,"ssl_peek 0\n");
+	if(ctx->method->ssl_write != 0) 
+		 fprintf(fp,"ssl_write %lx\n",(void*)ctx->method->ssl_write-tmp);
+	else 
+		 fprintf(fp,"ssl_write 0\n");
+	if(ctx->method->ssl_shutdown != 0) 
+		 fprintf(fp,"ssl_shutdown %lx\n",(void*)ctx->method->ssl_shutdown-tmp);
+	else 
+		 fprintf(fp,"ssl_shutdown 0\n");
+	if(ctx->method->ssl_renegotiate != 0) 
+		 fprintf(fp,"ssl_renegotiate %lx\n",(void*)ctx->method->ssl_renegotiate-tmp);
+	else 
+		 fprintf(fp,"ssl_renegotiate 0\n");
+	if(ctx->method->ssl_renegotiate_check != 0) 
+		 fprintf(fp,"ssl_renegotiate_check %lx\n",(void*)ctx->method->ssl_renegotiate_check-tmp);
+	else 
+		 fprintf(fp,"ssl_renegotiate_check 0\n");
+	if(ctx->method->ssl_get_message != 0) 
+		 fprintf(fp,"ssl_get_message %lx\n",(void*)ctx->method->ssl_get_message-tmp);
+	else 
+		 fprintf(fp,"ssl_get_message 0\n");
+	if(ctx->method->ssl_read_bytes != 0) 
+		 fprintf(fp,"ssl_read_bytes %lx\n",(void*)ctx->method->ssl_read_bytes-tmp);
+	else 
+		 fprintf(fp,"ssl_read_bytes 0\n");
+	if(ctx->method->ssl_write_bytes != 0) 
+		 fprintf(fp,"ssl_write_bytes %lx\n",(void*)ctx->method->ssl_write_bytes-tmp);
+	else 
+		 fprintf(fp,"ssl_write_bytes 0\n");
+	if(ctx->method->ssl_dispatch_alert != 0) 
+		 fprintf(fp,"ssl_dispatch_alert %lx\n",(void*)ctx->method->ssl_dispatch_alert-tmp);
+	else 
+		 fprintf(fp,"ssl_dispatch_alert 0\n");
+	if(ctx->method->ssl_ctrl != 0) 
+		 fprintf(fp,"ssl_ctrl %lx\n",(void*)ctx->method->ssl_ctrl-tmp);
+	else 
+		 fprintf(fp,"ssl_ctrl 0\n");
+	if(ctx->method->ssl_ctx_ctrl != 0) 
+		 fprintf(fp,"ssl_ctx_ctrl %lx\n",(void*)ctx->method->ssl_ctx_ctrl-tmp);
+	else 
+		 fprintf(fp,"ssl_ctx_ctrl 0\n");
+	if(ctx->method->get_cipher_by_char != 0) 
+		 fprintf(fp,"get_cipher_by_char %lx\n",(void*)ctx->method->get_cipher_by_char-tmp);
+	else 
+		 fprintf(fp,"get_cipher_by_char 0\n");
+	if(ctx->method->put_cipher_by_char != 0) 
+		 fprintf(fp,"put_cipher_by_char %lx\n",(void*)ctx->method->put_cipher_by_char-tmp);
+	else 
+		 fprintf(fp,"put_cipher_by_char 0\n");
+	if(ctx->method->ssl_pending != 0) 
+		 fprintf(fp,"ssl_pending %lx\n",(void*)ctx->method->ssl_pending-tmp);
+	else 
+		 fprintf(fp,"ssl_pending 0\n");
+	if(ctx->method->num_ciphers != 0) 
+		 fprintf(fp,"num_ciphers %lx\n",(void*)ctx->method->num_ciphers-tmp);
+	else 
+		 fprintf(fp,"num_ciphers 0\n");
+	if(ctx->method->get_cipher != 0) 
+		 fprintf(fp,"get_cipher %lx\n",(void*)ctx->method->get_cipher-tmp);
+	else 
+		 fprintf(fp,"get_cipher 0\n");
+	if(ctx->method->get_ssl_method != 0) 
+		 fprintf(fp,"get_ssl_method %lx\n",(void*)ctx->method->get_ssl_method-tmp);
+	else 
+		 fprintf(fp,"get_ssl_method 0\n");
+	if(ctx->method->get_timeout != 0) 
+		 fprintf(fp,"get_timeout %lx\n",(void*)ctx->method->get_timeout-tmp);
+	else 
+		 fprintf(fp,"get_timeout 0\n");
+	if(ctx->method->ssl_version != 0) 
+		 fprintf(fp,"ssl_version %lx\n",(void*)ctx->method->ssl_version-tmp);
+	else 
+		 fprintf(fp,"ssl_version 0\n");
+	if(ctx->method->ssl_callback_ctrl != 0) 
+		 fprintf(fp,"ssl_callback_ctrl %lx\n",(void*)ctx->method->ssl_callback_ctrl-tmp);
+	else 
+		 fprintf(fp,"ssl_callback_ctrl 0\n");
+	if(ctx->method->ssl_ctx_callback_ctrl != 0) 
+		 fprintf(fp,"ssl_ctx_callback_ctrl %lx\n",(void*)ctx->method->ssl_ctx_callback_ctrl-tmp);
+	else 
+		 fprintf(fp,"ssl_ctx_callback_ctrl 0\n");
+	if(ctx->cert_store->verify != 0) 
+		 fprintf(fp,"verify %lx\n",(void*)ctx->cert_store->verify-tmp);
+	else 
+		 fprintf(fp,"verify 0\n");
+	if(ctx->cert_store->verify_cb != 0) 
+		 fprintf(fp,"verify_cb %lx\n",(void*)ctx->cert_store->verify_cb-tmp);
+	else 
+		 fprintf(fp,"verify_cb 0\n");
+	if(ctx->cert_store->get_issuer != 0) 
+		 fprintf(fp,"get_issuer %lx\n",(void*)ctx->cert_store->get_issuer-tmp);
+	else 
+		 fprintf(fp,"get_issuer 0\n");
+	if(ctx->cert_store->check_issued != 0) 
+		 fprintf(fp,"check_issued %lx\n",(void*)ctx->cert_store->check_issued-tmp);
+	else 
+		 fprintf(fp,"check_issued 0\n");
+	if(ctx->cert_store->check_revocation != 0) 
+		 fprintf(fp,"check_revocation %lx\n",(void*)ctx->cert_store->check_revocation-tmp);
+	else 
+		 fprintf(fp,"check_revocation 0\n");
+	if(ctx->cert_store->get_crl != 0) 
+		 fprintf(fp,"get_crl %lx\n",(void*)ctx->cert_store->get_crl-tmp);
+	else 
+		 fprintf(fp,"get_crl 0\n");
+	if(ctx->cert_store->check_crl != 0) 
+		 fprintf(fp,"check_crl %lx\n",(void*)ctx->cert_store->check_crl-tmp);
+	else 
+		 fprintf(fp,"check_crl 0\n");
+	if(ctx->cert_store->cert_crl != 0) 
+		 fprintf(fp,"cert_crl %lx\n",(void*)ctx->cert_store->cert_crl-tmp);
+	else 
+		 fprintf(fp,"cert_crl 0\n");
+	if(ctx->cert_store->lookup_certs != 0) 
+		 fprintf(fp,"lookup_certs %lx\n",(void*)ctx->cert_store->lookup_certs-tmp);
+	else 
+		 fprintf(fp,"lookup_certs 0\n");
+	if(ctx->cert_store->lookup_crls != 0) 
+		 fprintf(fp,"lookup_crls %lx\n",(void*)ctx->cert_store->lookup_crls-tmp);
+	else 
+		 fprintf(fp,"lookup_crls 0\n");
+	if(ctx->cert_store->cleanup != 0) 
+		 fprintf(fp,"cleanup %lx\n",(void*)ctx->cert_store->cleanup-tmp);
+	else 
+		 fprintf(fp,"cleanup 0\n");
+	if(ctx->new_session_cb != 0) 
+		 fprintf(fp,"new_session_cb %lx\n",(void*)ctx->new_session_cb-tmp);
+	else 
+		 fprintf(fp,"new_session_cb 0\n");
+	if(ctx->remove_session_cb != 0) 
+		 fprintf(fp,"remove_session_cb %lx\n",(void*)ctx->remove_session_cb-tmp);
+	else 
+		 fprintf(fp,"remove_session_cb 0\n");
+	if(ctx->get_session_cb != 0) 
+		 fprintf(fp,"get_session_cb %lx\n",(void*)ctx->get_session_cb-tmp);
+	else 
+		 fprintf(fp,"get_session_cb 0\n");
+	if(ctx->app_verify_callback != 0) 
+		 fprintf(fp,"app_verify_callback %lx\n",(void*)ctx->app_verify_callback-tmp);
+	else 
+		 fprintf(fp,"app_verify_callback 0\n");
+	if(ctx->client_cert_cb != 0) 
+		 fprintf(fp,"client_cert_cb %lx\n",(void*)ctx->client_cert_cb-tmp);
+	else 
+		 fprintf(fp,"client_cert_cb 0\n");
+	if(ctx->app_gen_cookie_cb != 0) 
+		 fprintf(fp,"app_gen_cookie_cb %lx\n",(void*)ctx->app_gen_cookie_cb-tmp);
+	else 
+		 fprintf(fp,"app_gen_cookie_cb 0\n");
+	if(ctx->app_verify_cookie_cb != 0) 
+		 fprintf(fp,"app_verify_cookie_cb %lx\n",(void*)ctx->app_verify_cookie_cb-tmp);
+	else 
+		 fprintf(fp,"app_verify_cookie_cb 0\n");
+	if(ctx->rsa_md5->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->rsa_md5->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->rsa_md5->update != 0) 
+		 fprintf(fp,"update %lx\n",(void*)ctx->rsa_md5->update-tmp);
+	else 
+		 fprintf(fp,"update 0\n");
+	if(ctx->rsa_md5->final != 0) 
+		 fprintf(fp,"final %lx\n",(void*)ctx->rsa_md5->final-tmp);
+	else 
+		 fprintf(fp,"final 0\n");
+	if(ctx->rsa_md5->copy != 0) 
+		 fprintf(fp,"copy %lx\n",(void*)ctx->rsa_md5->copy-tmp);
+	else 
+		 fprintf(fp,"copy 0\n");
+	if(ctx->rsa_md5->cleanup != 0) 
+		 fprintf(fp,"cleanup %lx\n",(void*)ctx->rsa_md5->cleanup-tmp);
+	else 
+		 fprintf(fp,"cleanup 0\n");
+	if(ctx->rsa_md5->sign != 0) 
+		 fprintf(fp,"sign %lx\n",(void*)ctx->rsa_md5->sign-tmp);
+	else 
+		 fprintf(fp,"sign 0\n");
+	if(ctx->rsa_md5->verify != 0) 
+		 fprintf(fp,"verify %lx\n",(void*)ctx->rsa_md5->verify-tmp);
+	else 
+		 fprintf(fp,"verify 0\n");
+	if(ctx->rsa_md5->md_ctrl != 0) 
+		 fprintf(fp,"md_ctrl %lx\n",(void*)ctx->rsa_md5->md_ctrl-tmp);
+	else 
+		 fprintf(fp,"md_ctrl 0\n");
+	if(ctx->md5->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->md5->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->md5->update != 0) 
+		 fprintf(fp,"update %lx\n",(void*)ctx->md5->update-tmp);
+	else 
+		 fprintf(fp,"update 0\n");
+	if(ctx->md5->final != 0) 
+		 fprintf(fp,"final %lx\n",(void*)ctx->md5->final-tmp);
+	else 
+		 fprintf(fp,"final 0\n");
+	if(ctx->md5->copy != 0) 
+		 fprintf(fp,"copy %lx\n",(void*)ctx->md5->copy-tmp);
+	else 
+		 fprintf(fp,"copy 0\n");
+	if(ctx->md5->cleanup != 0) 
+		 fprintf(fp,"cleanup %lx\n",(void*)ctx->md5->cleanup-tmp);
+	else 
+		 fprintf(fp,"cleanup 0\n");
+	if(ctx->md5->sign != 0) 
+		 fprintf(fp,"sign %lx\n",(void*)ctx->md5->sign-tmp);
+	else 
+		 fprintf(fp,"sign 0\n");
+	if(ctx->md5->verify != 0) 
+		 fprintf(fp,"verify %lx\n",(void*)ctx->md5->verify-tmp);
+	else 
+		 fprintf(fp,"verify 0\n");
+	if(ctx->md5->md_ctrl != 0) 
+		 fprintf(fp,"md_ctrl %lx\n",(void*)ctx->md5->md_ctrl-tmp);
+	else 
+		 fprintf(fp,"md_ctrl 0\n");
+	if(ctx->sha1->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->sha1->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->sha1->update != 0) 
+		 fprintf(fp,"update %lx\n",(void*)ctx->sha1->update-tmp);
+	else 
+		 fprintf(fp,"update 0\n");
+	if(ctx->sha1->final != 0) 
+		 fprintf(fp,"final %lx\n",(void*)ctx->sha1->final-tmp);
+	else 
+		 fprintf(fp,"final 0\n");
+	if(ctx->sha1->copy != 0) 
+		 fprintf(fp,"copy %lx\n",(void*)ctx->sha1->copy-tmp);
+	else 
+		 fprintf(fp,"copy 0\n");
+	if(ctx->sha1->cleanup != 0) 
+		 fprintf(fp,"cleanup %lx\n",(void*)ctx->sha1->cleanup-tmp);
+	else 
+		 fprintf(fp,"cleanup 0\n");
+	if(ctx->sha1->sign != 0) 
+		 fprintf(fp,"sign %lx\n",(void*)ctx->sha1->sign-tmp);
+	else 
+		 fprintf(fp,"sign 0\n");
+	if(ctx->sha1->verify != 0) 
+		 fprintf(fp,"verify %lx\n",(void*)ctx->sha1->verify-tmp);
+	else 
+		 fprintf(fp,"verify 0\n");
+	if(ctx->sha1->md_ctrl != 0) 
+		 fprintf(fp,"md_ctrl %lx\n",(void*)ctx->sha1->md_ctrl-tmp);
+	else 
+		 fprintf(fp,"md_ctrl 0\n");
+	if(ctx->info_callback != 0) 
+		 fprintf(fp,"info_callback %lx\n",(void*)ctx->info_callback-tmp);
+	else 
+		 fprintf(fp,"info_callback 0\n");
+	if(ctx->msg_callback != 0) 
+		 fprintf(fp,"msg_callback %lx\n",(void*)ctx->msg_callback-tmp);
+	else 
+		 fprintf(fp,"msg_callback 0\n");
+	if(ctx->default_verify_callback != 0) 
+		 fprintf(fp,"default_verify_callback %lx\n",(void*)ctx->default_verify_callback-tmp);
+	else 
+		 fprintf(fp,"default_verify_callback 0\n");
+	if(ctx->tlsext_servername_callback != 0) 
+		 fprintf(fp,"tlsext_servername_callback %lx\n",(void*)ctx->tlsext_servername_callback-tmp);
+	else 
+		 fprintf(fp,"tlsext_servername_callback 0\n");
+	if(ctx->tlsext_ticket_key_cb != 0) 
+		 fprintf(fp,"tlsext_ticket_key_cb %lx\n",(void*)ctx->tlsext_ticket_key_cb-tmp);
+	else 
+		 fprintf(fp,"tlsext_ticket_key_cb 0\n");
+	if(ctx->tlsext_status_cb != 0) 
+		 fprintf(fp,"tlsext_status_cb %lx\n",(void*)ctx->tlsext_status_cb-tmp);
+	else 
+		 fprintf(fp,"tlsext_status_cb 0\n");
+	if(ctx->tlsext_opaque_prf_input_callback != 0) 
+		 fprintf(fp,"tlsext_opaque_prf_input_callback %lx\n",(void*)ctx->tlsext_opaque_prf_input_callback-tmp);
+	else 
+		 fprintf(fp,"tlsext_opaque_prf_input_callback 0\n");
+	if(ctx->psk_client_callback != 0) 
+		 fprintf(fp,"psk_client_callback %lx\n",(void*)ctx->psk_client_callback-tmp);
+	else 
+		 fprintf(fp,"psk_client_callback 0\n");
+	if(ctx->psk_server_callback != 0) 
+		 fprintf(fp,"psk_server_callback %lx\n",(void*)ctx->psk_server_callback-tmp);
+	else 
+		 fprintf(fp,"psk_server_callback 0\n");
+	/*if(ctx->srp_ctx->TLS_ext_srp_username_callback != 0) 
+		 fprintf(fp,"TLS_ext_srp_username_callback %lx\n",(void*)ctx->srp_ctx->TLS_ext_srp_username_callback-tmp);
+	else 
+		 fprintf(fp,"TLS_ext_srp_username_callback 0\n");
+	if(ctx->srp_ctx->SRP_verify_param_callback != 0) 
+		 fprintf(fp,"SRP_verify_param_callback %lx\n",(void*)ctx->srp_ctx->SRP_verify_param_callback-tmp);
+	else 
+		 fprintf(fp,"SRP_verify_param_callback 0\n");
+	if(ctx->srp_ctx->SRP_give_srp_client_pwd_callback != 0) 
+		 fprintf(fp,"SRP_give_srp_client_pwd_callback %lx\n",(void*)ctx->srp_ctx->SRP_give_srp_client_pwd_callback-tmp);
+	else 
+		 fprintf(fp,"SRP_give_srp_client_pwd_callback 0\n");*/
+	if(ctx->next_protos_advertised_cb != 0) 
+		 fprintf(fp,"next_protos_advertised_cb %lx\n",(void*)ctx->next_protos_advertised_cb-tmp);
+	else 
+		 fprintf(fp,"next_protos_advertised_cb 0\n");
+	if(ctx->next_proto_select_cb != 0) 
+		 fprintf(fp,"next_proto_select_cb %lx\n",(void*)ctx->next_proto_select_cb-tmp);
+	else 
+		 fprintf(fp,"next_proto_select_cb 0\n");
 
-	fprintf(fp,"dsa_do_sign %ld\n",ctx->client_cert_engine->dsa_meth->dsa_do_sign);
-	fprintf(fp,"dsa_sign_setup %ld\n",ctx->client_cert_engine->dsa_meth->dsa_sign_setup);
-	fprintf(fp,"dsa_do_verify %ld\n",ctx->client_cert_engine->dsa_meth->dsa_do_verify);
-	fprintf(fp,"dsa_mod_exp %ld\n",ctx->client_cert_engine->dsa_meth->dsa_mod_exp);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->dsa_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->dsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->dsa_meth->finish);
-	fprintf(fp,"dsa_paramgen %ld\n",ctx->client_cert_engine->dsa_meth->dsa_paramgen);
-	fprintf(fp,"dsa_keygen %ld\n",ctx->client_cert_engine->dsa_meth->dsa_keygen);
+	/*if(ctx->client_cert_engine->rsa_meth->rsa_pub_enc != 0) 
+		 fprintf(fp,"rsa_pub_enc %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_pub_enc-tmp);
+	else 
+		 fprintf(fp,"rsa_pub_enc 0\n");
+	if(ctx->client_cert_engine->rsa_meth->rsa_pub_dec != 0) 
+		 fprintf(fp,"rsa_pub_dec %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_pub_dec-tmp);
+	else 
+		 fprintf(fp,"rsa_pub_dec 0\n");
+	if(ctx->client_cert_engine->rsa_meth->rsa_priv_enc != 0) 
+		 fprintf(fp,"rsa_priv_enc %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_priv_enc-tmp);
+	else 
+		 fprintf(fp,"rsa_priv_enc 0\n");
+	if(ctx->client_cert_engine->rsa_meth->rsa_priv_dec != 0) 
+		 fprintf(fp,"rsa_priv_dec %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_priv_dec-tmp);
+	else 
+		 fprintf(fp,"rsa_priv_dec 0\n");
+	if(ctx->client_cert_engine->rsa_meth->rsa_mod_exp != 0) 
+		 fprintf(fp,"rsa_mod_exp %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_mod_exp-tmp);
+	else 
+		 fprintf(fp,"rsa_mod_exp 0\n");
+	if(ctx->client_cert_engine->rsa_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->rsa_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->rsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->rsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->rsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->rsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->rsa_meth->rsa_sign != 0) 
+		 fprintf(fp,"rsa_sign %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_sign-tmp);
+	else 
+		 fprintf(fp,"rsa_sign 0\n");
+	if(ctx->client_cert_engine->rsa_meth->rsa_verify != 0) 
+		 fprintf(fp,"rsa_verify %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_verify-tmp);
+	else 
+		 fprintf(fp,"rsa_verify 0\n");
+	if(ctx->client_cert_engine->rsa_meth->rsa_keygen != 0) 
+		 fprintf(fp,"rsa_keygen %lx\n",(void*)ctx->client_cert_engine->rsa_meth->rsa_keygen-tmp);
+	else 
+		 fprintf(fp,"rsa_keygen 0\n");
 
-	fprintf(fp,"generate_key %ld\n",ctx->client_cert_engine->dh_meth->generate_key);
-	fprintf(fp,"compute_key %ld\n",ctx->client_cert_engine->dh_meth->compute_key);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->dh_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->dh_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->dh_meth->finish);
-	fprintf(fp,"generate_params %ld\n",ctx->client_cert_engine->dh_meth->generate_params);
+	if(ctx->client_cert_engine->dsa_meth->dsa_do_sign != 0) 
+		 fprintf(fp,"dsa_do_sign %lx\n",(void*)ctx->client_cert_engine->dsa_meth->dsa_do_sign-tmp);
+	else 
+		 fprintf(fp,"dsa_do_sign 0\n");
+	if(ctx->client_cert_engine->dsa_meth->dsa_sign_setup != 0) 
+		 fprintf(fp,"dsa_sign_setup %lx\n",(void*)ctx->client_cert_engine->dsa_meth->dsa_sign_setup-tmp);
+	else 
+		 fprintf(fp,"dsa_sign_setup 0\n");
+	if(ctx->client_cert_engine->dsa_meth->dsa_do_verify != 0) 
+		 fprintf(fp,"dsa_do_verify %lx\n",(void*)ctx->client_cert_engine->dsa_meth->dsa_do_verify-tmp);
+	else 
+		 fprintf(fp,"dsa_do_verify 0\n");
+	if(ctx->client_cert_engine->dsa_meth->dsa_mod_exp != 0) 
+		 fprintf(fp,"dsa_mod_exp %lx\n",(void*)ctx->client_cert_engine->dsa_meth->dsa_mod_exp-tmp);
+	else 
+		 fprintf(fp,"dsa_mod_exp 0\n");
+	if(ctx->client_cert_engine->dsa_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->dsa_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->dsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->dsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->dsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->dsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->dsa_meth->dsa_paramgen != 0) 
+		 fprintf(fp,"dsa_paramgen %lx\n",(void*)ctx->client_cert_engine->dsa_meth->dsa_paramgen-tmp);
+	else 
+		 fprintf(fp,"dsa_paramgen 0\n");
+	if(ctx->client_cert_engine->dsa_meth->dsa_keygen != 0) 
+		 fprintf(fp,"dsa_keygen %lx\n",(void*)ctx->client_cert_engine->dsa_meth->dsa_keygen-tmp);
+	else 
+		 fprintf(fp,"dsa_keygen 0\n");
 
-	fprintf(fp,"compute_key %ld\n",ctx->client_cert_engine->ecdh_meth->compute_key);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->ecdh_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->ecdh_meth->finish);
+	if(ctx->client_cert_engine->dh_meth->generate_key != 0) 
+		 fprintf(fp,"generate_key %lx\n",(void*)ctx->client_cert_engine->dh_meth->generate_key-tmp);
+	else 
+		 fprintf(fp,"generate_key 0\n");
+	if(ctx->client_cert_engine->dh_meth->compute_key != 0) 
+		 fprintf(fp,"compute_key %lx\n",(void*)ctx->client_cert_engine->dh_meth->compute_key-tmp);
+	else 
+		 fprintf(fp,"compute_key 0\n");
+	if(ctx->client_cert_engine->dh_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->dh_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->dh_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->dh_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->dh_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->dh_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->dh_meth->generate_params != 0) 
+		 fprintf(fp,"generate_params %lx\n",(void*)ctx->client_cert_engine->dh_meth->generate_params-tmp);
+	else 
+		 fprintf(fp,"generate_params 0\n");
 
-	fprintf(fp,"ecdsa_do_sign %ld\n",ctx->client_cert_engine->ecdsa_meth->ecdsa_do_sign);
-	fprintf(fp,"ecdsa_sign_setup %ld\n",ctx->client_cert_engine->ecdsa_meth->ecdsa_sign_setup);
-	fprintf(fp,"ecdsa_do_verify %ld\n",ctx->client_cert_engine->ecdsa_meth->ecdsa_do_verify);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->ecdsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->ecdsa_meth->finish);
+	if(ctx->client_cert_engine->ecdh_meth->compute_key != 0) 
+		 fprintf(fp,"compute_key %lx\n",(void*)ctx->client_cert_engine->ecdh_meth->compute_key-tmp);
+	else 
+		 fprintf(fp,"compute_key 0\n");
+	if(ctx->client_cert_engine->ecdh_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->ecdh_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->ecdh_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->ecdh_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
 
-	fprintf(fp,"seed %ld\n",ctx->client_cert_engine->rand_meth->seed);
-	fprintf(fp,"bytes %ld\n",ctx->client_cert_engine->rand_meth->bytes);
-	fprintf(fp,"cleanup %ld\n",ctx->client_cert_engine->rand_meth->cleanup);
-	fprintf(fp,"add %ld\n",ctx->client_cert_engine->rand_meth->add);
-	fprintf(fp,"pseudorand %ld\n",ctx->client_cert_engine->rand_meth->pseudorand);
-	fprintf(fp,"status %ld\n",ctx->client_cert_engine->rand_meth->status);
+	if(ctx->client_cert_engine->ecdsa_meth->ecdsa_do_sign != 0) 
+		 fprintf(fp,"ecdsa_do_sign %lx\n",(void*)ctx->client_cert_engine->ecdsa_meth->ecdsa_do_sign-tmp);
+	else 
+		 fprintf(fp,"ecdsa_do_sign 0\n");
+	if(ctx->client_cert_engine->ecdsa_meth->ecdsa_sign_setup != 0) 
+		 fprintf(fp,"ecdsa_sign_setup %lx\n",(void*)ctx->client_cert_engine->ecdsa_meth->ecdsa_sign_setup-tmp);
+	else 
+		 fprintf(fp,"ecdsa_sign_setup 0\n");
+	if(ctx->client_cert_engine->ecdsa_meth->ecdsa_do_verify != 0) 
+		 fprintf(fp,"ecdsa_do_verify %lx\n",(void*)ctx->client_cert_engine->ecdsa_meth->ecdsa_do_verify-tmp);
+	else 
+		 fprintf(fp,"ecdsa_do_verify 0\n");
+	if(ctx->client_cert_engine->ecdsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->ecdsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->ecdsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->ecdsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+
+	if(ctx->client_cert_engine->rand_meth->seed != 0) 
+		 fprintf(fp,"seed %lx\n",(void*)ctx->client_cert_engine->rand_meth->seed-tmp);
+	else 
+		 fprintf(fp,"seed 0\n");
+	if(ctx->client_cert_engine->rand_meth->bytes != 0) 
+		 fprintf(fp,"bytes %lx\n",(void*)ctx->client_cert_engine->rand_meth->bytes-tmp);
+	else 
+		 fprintf(fp,"bytes 0\n");
+	if(ctx->client_cert_engine->rand_meth->cleanup != 0) 
+		 fprintf(fp,"cleanup %lx\n",(void*)ctx->client_cert_engine->rand_meth->cleanup-tmp);
+	else 
+		 fprintf(fp,"cleanup 0\n");
+	if(ctx->client_cert_engine->rand_meth->add != 0) 
+		 fprintf(fp,"add %lx\n",(void*)ctx->client_cert_engine->rand_meth->add-tmp);
+	else 
+		 fprintf(fp,"add 0\n");
+	if(ctx->client_cert_engine->rand_meth->pseudorand != 0) 
+		 fprintf(fp,"pseudorand %lx\n",(void*)ctx->client_cert_engine->rand_meth->pseudorand-tmp);
+	else 
+		 fprintf(fp,"pseudorand 0\n");
+	if(ctx->client_cert_engine->rand_meth->status != 0) 
+		 fprintf(fp,"status %lx\n",(void*)ctx->client_cert_engine->rand_meth->status-tmp);
+	else 
+		 fprintf(fp,"status 0\n");
 
 
-	fprintf(fp,"rsa_pub_enc %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_pub_enc);
-	fprintf(fp,"rsa_pub_dec %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_pub_dec);
-	fprintf(fp,"rsa_priv_enc %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_priv_enc);
-	fprintf(fp,"rsa_priv_dec %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_priv_dec);
-	fprintf(fp,"rsa_mod_exp %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_mod_exp);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->prev->rsa_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->rsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->rsa_meth->finish);
-	fprintf(fp,"rsa_sign %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_sign);
-	fprintf(fp,"rsa_verify %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_verify);
-	fprintf(fp,"rsa_keygen %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_keygen);
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_pub_enc != 0) 
+		 fprintf(fp,"rsa_pub_enc %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_pub_enc-tmp);
+	else 
+		 fprintf(fp,"rsa_pub_enc 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_pub_dec != 0) 
+		 fprintf(fp,"rsa_pub_dec %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_pub_dec-tmp);
+	else 
+		 fprintf(fp,"rsa_pub_dec 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_priv_enc != 0) 
+		 fprintf(fp,"rsa_priv_enc %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_priv_enc-tmp);
+	else 
+		 fprintf(fp,"rsa_priv_enc 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_priv_dec != 0) 
+		 fprintf(fp,"rsa_priv_dec %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_priv_dec-tmp);
+	else 
+		 fprintf(fp,"rsa_priv_dec 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_mod_exp != 0) 
+		 fprintf(fp,"rsa_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_mod_exp-tmp);
+	else 
+		 fprintf(fp,"rsa_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_sign != 0) 
+		 fprintf(fp,"rsa_sign %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_sign-tmp);
+	else 
+		 fprintf(fp,"rsa_sign 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_verify != 0) 
+		 fprintf(fp,"rsa_verify %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_verify-tmp);
+	else 
+		 fprintf(fp,"rsa_verify 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_keygen != 0) 
+		 fprintf(fp,"rsa_keygen %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_keygen-tmp);
+	else 
+		 fprintf(fp,"rsa_keygen 0\n");
 
-	fprintf(fp,"dsa_do_sign %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_do_sign);
-	fprintf(fp,"dsa_sign_setup %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_sign_setup);
-	fprintf(fp,"dsa_do_verify %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_do_verify);
-	fprintf(fp,"dsa_mod_exp %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_mod_exp);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->prev->dsa_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->dsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->dsa_meth->finish);
-	fprintf(fp,"dsa_paramgen %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_paramgen);
-	fprintf(fp,"dsa_keygen %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_keygen);
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_do_sign != 0) 
+		 fprintf(fp,"dsa_do_sign %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_do_sign-tmp);
+	else 
+		 fprintf(fp,"dsa_do_sign 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_sign_setup != 0) 
+		 fprintf(fp,"dsa_sign_setup %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_sign_setup-tmp);
+	else 
+		 fprintf(fp,"dsa_sign_setup 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_do_verify != 0) 
+		 fprintf(fp,"dsa_do_verify %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_do_verify-tmp);
+	else 
+		 fprintf(fp,"dsa_do_verify 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_mod_exp != 0) 
+		 fprintf(fp,"dsa_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_mod_exp-tmp);
+	else 
+		 fprintf(fp,"dsa_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_paramgen != 0) 
+		 fprintf(fp,"dsa_paramgen %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_paramgen-tmp);
+	else 
+		 fprintf(fp,"dsa_paramgen 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_keygen != 0) 
+		 fprintf(fp,"dsa_keygen %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_keygen-tmp);
+	else 
+		 fprintf(fp,"dsa_keygen 0\n");
 
-	fprintf(fp,"generate_key %ld\n",ctx->client_cert_engine->prev->dh_meth->generate_key);
-	fprintf(fp,"compute_key %ld\n",ctx->client_cert_engine->prev->dh_meth->compute_key);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->prev->dh_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->dh_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->dh_meth->finish);
-	fprintf(fp,"generate_params %ld\n",ctx->client_cert_engine->prev->dh_meth->generate_params);
+	if(ctx->client_cert_engine->prev->dh_meth->generate_key != 0) 
+		 fprintf(fp,"generate_key %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->generate_key-tmp);
+	else 
+		 fprintf(fp,"generate_key 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->compute_key != 0) 
+		 fprintf(fp,"compute_key %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->compute_key-tmp);
+	else 
+		 fprintf(fp,"compute_key 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->generate_params != 0) 
+		 fprintf(fp,"generate_params %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->generate_params-tmp);
+	else 
+		 fprintf(fp,"generate_params 0\n");
 
-	fprintf(fp,"compute_key %ld\n",ctx->client_cert_engine->prev->ecdh_meth->compute_key);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->ecdh_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->ecdh_meth->finish);
+	if(ctx->client_cert_engine->prev->ecdh_meth->compute_key != 0) 
+		 fprintf(fp,"compute_key %lx\n",(void*)ctx->client_cert_engine->prev->ecdh_meth->compute_key-tmp);
+	else 
+		 fprintf(fp,"compute_key 0\n");
+	if(ctx->client_cert_engine->prev->ecdh_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->ecdh_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->ecdh_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->ecdh_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
 
-	fprintf(fp,"ecdsa_do_sign %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_sign);
-	fprintf(fp,"ecdsa_sign_setup %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_sign_setup);
-	fprintf(fp,"ecdsa_do_verify %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_verify);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->finish);
+	if(ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_sign != 0) 
+		 fprintf(fp,"ecdsa_do_sign %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_sign-tmp);
+	else 
+		 fprintf(fp,"ecdsa_do_sign 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_sign_setup != 0) 
+		 fprintf(fp,"ecdsa_sign_setup %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_sign_setup-tmp);
+	else 
+		 fprintf(fp,"ecdsa_sign_setup 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_verify != 0) 
+		 fprintf(fp,"ecdsa_do_verify %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_verify-tmp);
+	else 
+		 fprintf(fp,"ecdsa_do_verify 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
 
-	fprintf(fp,"seed %ld\n",ctx->client_cert_engine->prev->rand_meth->seed);
-	fprintf(fp,"bytes %ld\n",ctx->client_cert_engine->prev->rand_meth->bytes);
-	fprintf(fp,"cleanup %ld\n",ctx->client_cert_engine->prev->rand_meth->cleanup);
-	fprintf(fp,"add %ld\n",ctx->client_cert_engine->prev->rand_meth->add);
-	fprintf(fp,"pseudorand %ld\n",ctx->client_cert_engine->prev->rand_meth->pseudorand);
-	fprintf(fp,"status %ld\n",ctx->client_cert_engine->prev->rand_meth->status);
+	if(ctx->client_cert_engine->prev->rand_meth->seed != 0) 
+		 fprintf(fp,"seed %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->seed-tmp);
+	else 
+		 fprintf(fp,"seed 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->bytes != 0) 
+		 fprintf(fp,"bytes %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->bytes-tmp);
+	else 
+		 fprintf(fp,"bytes 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->cleanup != 0) 
+		 fprintf(fp,"cleanup %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->cleanup-tmp);
+	else 
+		 fprintf(fp,"cleanup 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->add != 0) 
+		 fprintf(fp,"add %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->add-tmp);
+	else 
+		 fprintf(fp,"add 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->pseudorand != 0) 
+		 fprintf(fp,"pseudorand %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->pseudorand-tmp);
+	else 
+		 fprintf(fp,"pseudorand 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->status != 0) 
+		 fprintf(fp,"status %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->status-tmp);
+	else 
+		 fprintf(fp,"status 0\n");
 
 
-	fprintf(fp,"rsa_pub_enc %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_pub_enc);
-	fprintf(fp,"rsa_pub_dec %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_pub_dec);
-	fprintf(fp,"rsa_priv_enc %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_priv_enc);
-	fprintf(fp,"rsa_priv_dec %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_priv_dec);
-	fprintf(fp,"rsa_mod_exp %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_mod_exp);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->prev->rsa_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->rsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->rsa_meth->finish);
-	fprintf(fp,"rsa_sign %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_sign);
-	fprintf(fp,"rsa_verify %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_verify);
-	fprintf(fp,"rsa_keygen %ld\n",ctx->client_cert_engine->prev->rsa_meth->rsa_keygen);
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_pub_enc != 0) 
+		 fprintf(fp,"rsa_pub_enc %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_pub_enc-tmp);
+	else 
+		 fprintf(fp,"rsa_pub_enc 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_pub_dec != 0) 
+		 fprintf(fp,"rsa_pub_dec %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_pub_dec-tmp);
+	else 
+		 fprintf(fp,"rsa_pub_dec 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_priv_enc != 0) 
+		 fprintf(fp,"rsa_priv_enc %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_priv_enc-tmp);
+	else 
+		 fprintf(fp,"rsa_priv_enc 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_priv_dec != 0) 
+		 fprintf(fp,"rsa_priv_dec %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_priv_dec-tmp);
+	else 
+		 fprintf(fp,"rsa_priv_dec 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_mod_exp != 0) 
+		 fprintf(fp,"rsa_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_mod_exp-tmp);
+	else 
+		 fprintf(fp,"rsa_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_sign != 0) 
+		 fprintf(fp,"rsa_sign %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_sign-tmp);
+	else 
+		 fprintf(fp,"rsa_sign 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_verify != 0) 
+		 fprintf(fp,"rsa_verify %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_verify-tmp);
+	else 
+		 fprintf(fp,"rsa_verify 0\n");
+	if(ctx->client_cert_engine->prev->rsa_meth->rsa_keygen != 0) 
+		 fprintf(fp,"rsa_keygen %lx\n",(void*)ctx->client_cert_engine->prev->rsa_meth->rsa_keygen-tmp);
+	else 
+		 fprintf(fp,"rsa_keygen 0\n");
 
-	fprintf(fp,"dsa_do_sign %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_do_sign);
-	fprintf(fp,"dsa_sign_setup %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_sign_setup);
-	fprintf(fp,"dsa_do_verify %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_do_verify);
-	fprintf(fp,"dsa_mod_exp %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_mod_exp);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->prev->dsa_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->dsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->dsa_meth->finish);
-	fprintf(fp,"dsa_paramgen %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_paramgen);
-	fprintf(fp,"dsa_keygen %ld\n",ctx->client_cert_engine->prev->dsa_meth->dsa_keygen);
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_do_sign != 0) 
+		 fprintf(fp,"dsa_do_sign %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_do_sign-tmp);
+	else 
+		 fprintf(fp,"dsa_do_sign 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_sign_setup != 0) 
+		 fprintf(fp,"dsa_sign_setup %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_sign_setup-tmp);
+	else 
+		 fprintf(fp,"dsa_sign_setup 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_do_verify != 0) 
+		 fprintf(fp,"dsa_do_verify %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_do_verify-tmp);
+	else 
+		 fprintf(fp,"dsa_do_verify 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_mod_exp != 0) 
+		 fprintf(fp,"dsa_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_mod_exp-tmp);
+	else 
+		 fprintf(fp,"dsa_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_paramgen != 0) 
+		 fprintf(fp,"dsa_paramgen %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_paramgen-tmp);
+	else 
+		 fprintf(fp,"dsa_paramgen 0\n");
+	if(ctx->client_cert_engine->prev->dsa_meth->dsa_keygen != 0) 
+		 fprintf(fp,"dsa_keygen %lx\n",(void*)ctx->client_cert_engine->prev->dsa_meth->dsa_keygen-tmp);
+	else 
+		 fprintf(fp,"dsa_keygen 0\n");
 
-	fprintf(fp,"generate_key %ld\n",ctx->client_cert_engine->prev->dh_meth->generate_key);
-	fprintf(fp,"compute_key %ld\n",ctx->client_cert_engine->prev->dh_meth->compute_key);
-	fprintf(fp,"bn_mod_exp %ld\n",ctx->client_cert_engine->prev->dh_meth->bn_mod_exp);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->dh_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->dh_meth->finish);
-	fprintf(fp,"generate_params %ld\n",ctx->client_cert_engine->prev->dh_meth->generate_params);
+	if(ctx->client_cert_engine->prev->dh_meth->generate_key != 0) 
+		 fprintf(fp,"generate_key %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->generate_key-tmp);
+	else 
+		 fprintf(fp,"generate_key 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->compute_key != 0) 
+		 fprintf(fp,"compute_key %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->compute_key-tmp);
+	else 
+		 fprintf(fp,"compute_key 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->bn_mod_exp != 0) 
+		 fprintf(fp,"bn_mod_exp %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->bn_mod_exp-tmp);
+	else 
+		 fprintf(fp,"bn_mod_exp 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
+	if(ctx->client_cert_engine->prev->dh_meth->generate_params != 0) 
+		 fprintf(fp,"generate_params %lx\n",(void*)ctx->client_cert_engine->prev->dh_meth->generate_params-tmp);
+	else 
+		 fprintf(fp,"generate_params 0\n");
 
-	fprintf(fp,"compute_key %ld\n",ctx->client_cert_engine->prev->ecdh_meth->compute_key);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->ecdh_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->ecdh_meth->finish);
+	if(ctx->client_cert_engine->prev->ecdh_meth->compute_key != 0) 
+		 fprintf(fp,"compute_key %lx\n",(void*)ctx->client_cert_engine->prev->ecdh_meth->compute_key-tmp);
+	else 
+		 fprintf(fp,"compute_key 0\n");
+	if(ctx->client_cert_engine->prev->ecdh_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->ecdh_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->ecdh_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->ecdh_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
 
-	fprintf(fp,"ecdsa_do_sign %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_sign);
-	fprintf(fp,"ecdsa_sign_setup %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_sign_setup);
-	fprintf(fp,"ecdsa_do_verify %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_verify);
-	fprintf(fp,"init %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->init);
-	fprintf(fp,"finish %ld\n",ctx->client_cert_engine->prev->ecdsa_meth->finish);
+	if(ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_sign != 0) 
+		 fprintf(fp,"ecdsa_do_sign %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_sign-tmp);
+	else 
+		 fprintf(fp,"ecdsa_do_sign 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_sign_setup != 0) 
+		 fprintf(fp,"ecdsa_sign_setup %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_sign_setup-tmp);
+	else 
+		 fprintf(fp,"ecdsa_sign_setup 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_verify != 0) 
+		 fprintf(fp,"ecdsa_do_verify %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->ecdsa_do_verify-tmp);
+	else 
+		 fprintf(fp,"ecdsa_do_verify 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->init != 0) 
+		 fprintf(fp,"init %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->init-tmp);
+	else 
+		 fprintf(fp,"init 0\n");
+	if(ctx->client_cert_engine->prev->ecdsa_meth->finish != 0) 
+		 fprintf(fp,"finish %lx\n",(void*)ctx->client_cert_engine->prev->ecdsa_meth->finish-tmp);
+	else 
+		 fprintf(fp,"finish 0\n");
 
-	fprintf(fp,"seed %ld\n",ctx->client_cert_engine->prev->rand_meth->seed);
-	fprintf(fp,"bytes %ld\n",ctx->client_cert_engine->prev->rand_meth->bytes);
-	fprintf(fp,"cleanup %ld\n",ctx->client_cert_engine->prev->rand_meth->cleanup);
-	fprintf(fp,"add %ld\n",ctx->client_cert_engine->prev->rand_meth->add);
-	fprintf(fp,"pseudorand %ld\n",ctx->client_cert_engine->prev->rand_meth->pseudorand);
-	fprintf(fp,"status %ld\n",ctx->client_cert_engine->prev->rand_meth->status);*/
+	if(ctx->client_cert_engine->prev->rand_meth->seed != 0) 
+		 fprintf(fp,"seed %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->seed-tmp);
+	else 
+		 fprintf(fp,"seed 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->bytes != 0) 
+		 fprintf(fp,"bytes %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->bytes-tmp);
+	else 
+		 fprintf(fp,"bytes 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->cleanup != 0) 
+		 fprintf(fp,"cleanup %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->cleanup-tmp);
+	else 
+		 fprintf(fp,"cleanup 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->add != 0) 
+		 fprintf(fp,"add %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->add-tmp);
+	else 
+		 fprintf(fp,"add 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->pseudorand != 0) 
+		 fprintf(fp,"pseudorand %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->pseudorand-tmp);
+	else 
+		 fprintf(fp,"pseudorand 0\n");
+	if(ctx->client_cert_engine->prev->rand_meth->status != 0) 
+		 fprintf(fp,"status %lx\n",(void*)ctx->client_cert_engine->prev->rand_meth->status-tmp);
+	else 
+		 fprintf(fp,"status 0\n");*/
+
 	
 	//close the file
     fclose(fp);
@@ -1410,8 +2021,6 @@ int password_callback(char *buf, int size, int rwflag, void *userdata)
 static void* header_handler(struct dl_phdr_info* info, size_t size, void* data)
 {
 	if(strstr(info->dlpi_name, "libssl") != NULL) {
-		printf("%s\n",info->dlpi_name);
-		printf("From function: %p\n",(void*)info->dlpi_addr);
 		tmp = (void*) info->dlpi_addr;
 		return (void*)info->dlpi_addr;
 	}
@@ -1468,7 +2077,6 @@ int main()
         return 0;
     }
     dl_iterate_phdr(header_handler, NULL);
-    printf("%p\n",tmp);
 
     printf("Attempting to create BIO object... ");
     bio = BIO_new_ssl(ctx, 0);
