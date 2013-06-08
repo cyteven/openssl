@@ -2054,7 +2054,10 @@ int main()
     OpenSSL_add_all_algorithms();
 
     printf("Attempting to create SSL context... ");
+    ctx = NULL;
     ctx = SSL_CTX_new(SSLv3_server_method());
+    
+    take_function_pointers_backup(ctx);
     
     if(ctx == NULL)
     {
@@ -2063,7 +2066,8 @@ int main()
     }
 
     printf("\nLoading certificates...\n");
-    SSL_CTX_set_default_passwd_cb(ctx, callback);
+    SSL_CTX_set_default_passwd_cb(ctx, NULL);
+    
     if(!SSL_CTX_use_certificate_file(ctx, "TrustStore.pem", SSL_FILETYPE_PEM))
     {
         ERR_print_errors_fp(stdout);
