@@ -115,7 +115,8 @@ int main(int argc, char **argv)
 			BIO_free_all(abio);
 			return;
 		}
-		printf("Wrote: %d\n",BIO_puts(out, "Hello\n"));
+		printf("%ld\n",out);
+		printf("Wrote: %d\n",BIO_puts(out, "Hello 123\n"));
 		BIO_flush(out);
 		
 		fp = fopen("bss_backup","wb");
@@ -125,10 +126,14 @@ int main(int argc, char **argv)
 		fp = fopen("data_backup","wb");
 		fwrite(&__data_start,1,&_edata - &__data_start,fp);
 		fclose(fp);
-	}
-	else
-	{
-		FILE * fp;
+		
+		ctx = NULL;
+		out = NULL;
+		ssl = NULL;
+	//}
+	//else
+	//{
+	//	FILE * fp;
 		
 		/*SSL_load_error_strings();
 		ERR_load_BIO_strings();
@@ -174,9 +179,16 @@ int main(int argc, char **argv)
 		BIO_get_ssl(bio, &ssl);
 		SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);*/
 		
+		/**
+		 * Backup code - start
+		 **/
 		fp = fopen("/home/herat/Downloads/openssl-backup/shared","w");
 		fprintf(fp,"1");
 		fclose(fp);
+		
+		/**
+		 * Backup code - end
+		 **/
 		
 		/*printf("Waiting for incoming connection...\n");
 		abio = BIO_new_accept("4422");
@@ -219,8 +231,10 @@ int main(int argc, char **argv)
 		fread(&__data_start,1, &_edata - &__data_start,fp);
 		fclose(fp);
 		
-		printf("Wrote: %d\n",BIO_puts(out, "Hello\n"));
-		//BIO_flush(out);
+		printf("%ld\n",out);
+		
+		BIO_puts(out, "Hello123\n");
+		BIO_flush(out);
 		
 		BIO_free_all(out);
 		BIO_free_all(bio);
