@@ -116,12 +116,10 @@ _LHASH *lh_new(LHASH_HASH_FN_TYPE h, LHASH_COMP_FN_TYPE c)
 	_LHASH *ret;
 	int i;
 
-	if ((ret=OPENSSL_malloc(sizeof(_LHASH))) == NULL) {	
+	if ((ret=OPENSSL_malloc(sizeof(_LHASH))) == NULL)
 		goto err0;
-	}
-	if ((ret->b=OPENSSL_malloc(sizeof(LHASH_NODE *)*MIN_NODES)) == NULL) {
+	if ((ret->b=OPENSSL_malloc(sizeof(LHASH_NODE *)*MIN_NODES)) == NULL)
 		goto err1;
-	}
 	for (i=0; i<MIN_NODES; i++)
 		ret->b[i]=NULL;
 	ret->comp=((c == NULL)?(LHASH_COMP_FN_TYPE)strcmp:c);
@@ -183,11 +181,13 @@ void *lh_insert(_LHASH *lh, void *data)
 	unsigned long hash;
 	LHASH_NODE *nn,**rn;
 	void *ret;
+
 	lh->error=0;
 	if (lh->up_load <= (lh->num_items*LH_LOAD_MULT/lh->num_nodes))
 		expand(lh);
 
 	rn=getrn(lh,data,&hash);
+
 	if (*rn == NULL)
 		{
 		if ((nn=(LHASH_NODE *)OPENSSL_malloc(sizeof(LHASH_NODE))) == NULL)
@@ -250,9 +250,10 @@ void *lh_retrieve(_LHASH *lh, const void *data)
 	unsigned long hash;
 	LHASH_NODE **rn;
 	void *ret;
-	lh->error=0;
 
+	lh->error=0;
 	rn=getrn(lh,data,&hash);
+
 	if (*rn == NULL)
 		{
 		lh->num_retrieve_miss++;
@@ -406,12 +407,15 @@ static LHASH_NODE **getrn(_LHASH *lh, const void *data, unsigned long *rhash)
 	LHASH_NODE **ret,*n1;
 	unsigned long hash,nn;
 	LHASH_COMP_FN_TYPE cf;
+
 	hash=(*(lh->hash))(data);
 	lh->num_hash_calls++;
 	*rhash=hash;
+
 	nn=hash%lh->pmax;
 	if (nn < lh->p)
 		nn=hash%lh->num_alloc_nodes;
+
 	cf=lh->comp;
 	ret= &(lh->b[(int)nn]);
 	for (n1= *ret; n1 != NULL; n1=n1->next)

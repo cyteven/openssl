@@ -70,8 +70,6 @@
 static void morecore();
 static int findbucket();
 
-void * _startp, * _endp;
-
 /*
  * The overhead on a block is at least 4 bytes.  When free, this space
  * contains a pointer to the next free block, and the bottom two bits must
@@ -126,8 +124,6 @@ extern  void *sbrk();
 
 static	int pagesz;			/* page size */
 static	int pagebucket;			/* page size bucket */
-int memory_size = 104857600;
-char memory[104857600]; //2147483647
 
 #ifdef MSTATS
 /*
@@ -156,25 +152,143 @@ botch(s)
 #define	ASSERT(p)
 #endif
 
-char *Next = NULL;
+char memory[104857600];
+char *__next = memory;
 
 void *
 _malloc(nbytes)
 	unsigned nbytes;
-{ 
-	char *tp;
-	if(Next + nbytes > memory + memory_size) {
-		printf("-----Increase buffer size.-----");
-		return NULL;
+{
+  	register union overhead *op;
+  	register int bucket, n;
+	register unsigned amt;
+
+	/*
+	 * First time malloc is called, setup page size and
+	 * align break pointer so all data will be page aligned.
+	 */
+
+	if (pagesz == 0) {
+#if defined( HPUX )
+                pagesz = n = (int)sysconf(_SC_PAGE_SIZE);
+#elif defined( SOLARIS ) || defined ( SOLARIS_X86 ) || defined (UNIXWARE)
+                pagesz = n = (int)sysconf(_SC_PAGESIZE);
+#else
+                pagesz = n = getpagesize();
+#endif
+		op = (union overhead *)memory;//sbrk(0);
+  		n = n - sizeof (*op) - ((int)op & (n - 1));
+		if (n < 0)
+			n += pagesz;
+  		if (n) {
+  			/*if ((char *)sbrk(n) == (char *)-1)
+			{
+				return (NULL);
+			}*/
+		}
+		bucket = 0;
+		amt = 8;
+		while (pagesz > amt) {
+			amt <<= 1;
+			bucket++;
+		}
+		pagebucket = bucket;
 	}
-  	if(Next == NULL) {
-		Next = memory + nbytes;
-		tp = memory;
+	/*
+	 * Convert amount of memory requested into closest block size
+	 * stored in hash buckets which satisfies request.
+	 * Account for space used per block for accounting.
+	 */
+	if (nbytes <= (n = pagesz - sizeof (*op) - RSLOP)) {
+#ifndef RCHECK
+		amt = 8;	/* size of first bucket */
+		bucket = 0;
+#else
+		amt = 16;	/* size of first bucket */
+		bucket = 1;
+#endif
+		n = -(sizeof (*op) + RSLOP);
 	} else {
-		tp = Next;
-		Next = Next + nbytes;		
+		amt = pagesz;
+		bucket = pagebucket;
 	}
-	return tp;
+	while (nbytes > amt + n) {
+		amt <<= 1;
+		if (amt == 0)
+		{
+			return (NULL);
+		}
+		bucket++;
+	}
+	/*
+	 * If nothing in hash bucket right now,
+	 * request more memory from the system.
+	 */
+  	if ((op = nextf[bucket]) == NULL) {
+            {
+                /* Start of inlined morecore. */
+                int bucket1 = bucket;
+                register union overhead *op;
+                register int sz;		/* size of desired block */
+                int amt;			/* amount to allocate */
+                int nblks;			/* how many blocks we get */
+
+                /*
+                 * sbrk_size <= 0 only for big, FLUFFY, requests (about
+                 * 2^30 bytes on a VAX, I think) or for a negative arg.
+                 */
+                sz = 1 << (bucket1 + 3); //nbytes + 8;
+#ifdef DEBUG
+                ASSERT(sz > 0);
+#else
+                if (sz <= 0)
+                    goto morecore_return;
+#endif
+                if (sz < pagesz) {
+                    amt = pagesz;
+                    nblks = amt / sz;
+                } else {
+                    amt = sz + pagesz;
+                    nblks = 1;
+                }
+                op = (union overhead *)__next;//sbrk(amt);
+                __next += amt;
+                /* no more room! */
+                if ((int)op == -1)
+                    goto morecore_return;
+                /*
+                 * Add new memory allocated to that on
+                 * free list for this hash bucket.
+                 */
+                nextf[bucket1] = op;
+                while (--nblks > 0) {
+                    op->ov_next = (union overhead *)((caddr_t)op + sz);
+                    op = (union overhead *)((caddr_t)op + sz);
+                } /* End of inlined morecore. */
+              morecore_return:;
+            }
+            if ((op = nextf[bucket]) == NULL)
+            {
+                return (NULL);
+            }
+	}
+	/* remove from linked list */
+  	nextf[bucket] = op->ov_next;
+	op->ov_magic = MAGIC;
+	op->ov_index = bucket;
+#ifdef MSTATS
+  	nmalloc[bucket]++;
+#endif
+#ifdef RCHECK
+	/*
+	 * Record allocated size of block and
+	 * bound space with magic numbers.
+	 */
+	op->ov_size = (nbytes + RSLOP - 1) & ~(RSLOP - 1);
+	op->ov_rmagic = RMAGIC;
+  	*(u_short *)((caddr_t)(op + 1) + op->ov_size) = RMAGIC;
+#endif
+  	return ((char *)(op + 1));
 }
 
 /*
@@ -207,7 +321,8 @@ morecore(bucket)
 		amt = sz + pagesz;
 		nblks = 1;
 	}
-	op = (union overhead *)sbrk(amt);
+	op = (union overhead *)__next;//sbrk(amt);
+	__next += amt;
 	/* no more room! */
   	if ((int)op == -1)
   		return;
@@ -225,6 +340,31 @@ morecore(bucket)
 _free(cp)
 	void *cp;
 {
+  	register int size;
+	register union overhead *op;
+
+  	if (cp == NULL)
+  		return;
+	op = (union overhead *)((caddr_t)cp - sizeof (union overhead));
+#ifdef DEBUG
+  	ASSERT(op->ov_magic == MAGIC);		
+#else
+	if (op->ov_magic != MAGIC)
+	{
+		return;				
+	}
+#endif
+#ifdef RCHECK
+  	ASSERT(op->ov_rmagic == RMAGIC);
+	ASSERT(*(u_short *)((caddr_t)(op + 1) + op->ov_size) == RMAGIC);
+#endif
+  	size = op->ov_index;
+  	ASSERT(size < NBUCKETS);
+	op->ov_next = nextf[size];
+  	nextf[size] = op;
+#ifdef MSTATS
+  	nmalloc[size]--;
+#endif
 }
 
 /*
@@ -245,9 +385,66 @@ _realloc(cp, nbytes)
 	void *cp;
 	unsigned nbytes;
 {
-	char *res;
-	res = _malloc(nbytes); 
-  	memcpy(res, cp, nbytes);
+  	register u_int onb;
+	register int i;
+	union overhead *op;
+  	char *res;
+	int was_alloced = 0;
+
+  	if (cp == NULL)
+  		return (_malloc(nbytes));
+	op = (union overhead *)((caddr_t)cp - sizeof (union overhead));
+	if (op->ov_magic == MAGIC) {
+		was_alloced++;
+		i = op->ov_index;
+	} else {
+		/*
+		 * Already free, doing "compaction".
+		 *
+		 * Search for the old block of memory on the
+		 * free list.  First, check the most common
+		 * case (last element free'd), then (this failing)
+		 * the last ``realloc_srchlen'' items free'd.
+		 * If all lookups fail, then assume the size of
+		 * the memory block being realloc'd is the
+		 * largest possible (so that all "nbytes" of new
+		 * memory are copied into).  Note that this could cause
+		 * a memory fault if the old area was tiny, and the moon
+		 * is gibbous.  However, that is very unlikely.
+		 */
+		if ((i = findbucket(op, 1)) < 0 &&
+		    (i = findbucket(op, realloc_srchlen)) < 0)
+			i = NBUCKETS;
+	}
+	onb = 1 << (i + 3);
+	if (onb < pagesz)
+		onb -= sizeof (*op) + RSLOP;
+	else
+		onb += pagesz - sizeof (*op) - RSLOP;
+	/* avoid the copy if same size block */
+	if (was_alloced) {
+		if (i) {
+			i = 1 << (i + 2);
+			if (i < pagesz)
+				i -= sizeof (*op) + RSLOP;
+			else
+				i += pagesz - sizeof (*op) - RSLOP;
+		}
+		if (nbytes <= onb && nbytes > i) {
+#ifdef RCHECK
+			op->ov_size = (nbytes + RSLOP - 1) & ~(RSLOP - 1);
+			*(u_short *)((caddr_t)(op + 1) + op->ov_size) = RMAGIC;
+#endif
+			return(cp);
+		} else
+			_free(cp);
+	}
+  	if ((res = _malloc(nbytes)) == NULL)
+	{
+  		return (NULL);
+	}
+  	if (cp != res)		/* common optimization if "compacting" */
+		memcpy(res, cp, (nbytes < onb) ? nbytes : onb);
   	return (res);
 }
 

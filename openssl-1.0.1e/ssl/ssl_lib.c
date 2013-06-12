@@ -1232,12 +1232,12 @@ int ssl_cipher_ptr_id_cmp(const SSL_CIPHER * const *ap,
 			const SSL_CIPHER * const *bp)
 	{
 	long l;
+
 	l=(*ap)->id-(*bp)->id;
-	if (l == 0L) {
+	if (l == 0L)
 		return(0);
-	} else {
+	else
 		return((l > 0)?1:-1);
-	}
 	}
 
 /** return a STACK of the ciphers available for the SSL and in order of
@@ -1700,8 +1700,6 @@ SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth)
 		goto err;
 		}
 	ret=(SSL_CTX *)OPENSSL_malloc(sizeof(SSL_CTX));
-	printf("\n---Inside ssl_lib.c returned!!!---\n");
-	
 	if (ret == NULL)
 		goto err;
 
@@ -1873,7 +1871,6 @@ SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth)
 
 	return(ret);
 err:
-	printf("err\n");
 	SSLerr(SSL_F_SSL_CTX_NEW,ERR_R_MALLOC_FAILURE);
 err2:
 	if (ret != NULL) SSL_CTX_free(ret);

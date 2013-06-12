@@ -457,12 +457,14 @@ int SSL_CTX_use_certificate_file(SSL_CTX *ctx, const char *file, int type)
 	BIO *in;
 	int ret=0;
 	X509 *x=NULL;
+
 	in=BIO_new(BIO_s_file_internal());
 	if (in == NULL)
 		{
 		SSLerr(SSL_F_SSL_CTX_USE_CERTIFICATE_FILE,ERR_R_BUF_LIB);
 		goto end;
 		}
+
 	if (BIO_read_filename(in,file) <= 0)
 		{
 		SSLerr(SSL_F_SSL_CTX_USE_CERTIFICATE_FILE,ERR_R_SYS_LIB);
@@ -483,11 +485,13 @@ int SSL_CTX_use_certificate_file(SSL_CTX *ctx, const char *file, int type)
 		SSLerr(SSL_F_SSL_CTX_USE_CERTIFICATE_FILE,SSL_R_BAD_SSL_FILETYPE);
 		goto end;
 		}
+
 	if (x == NULL)
 		{
 		SSLerr(SSL_F_SSL_CTX_USE_CERTIFICATE_FILE,j);
 		goto end;
 		}
+
 	ret=SSL_CTX_use_certificate(ctx,x);
 end:
 	if (x != NULL) X509_free(x);
@@ -777,4 +781,3 @@ end:
 	return(ret);
 	}
 #endif
-
