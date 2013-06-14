@@ -1,0 +1,1 @@
+cmd_/home/herat/Downloads/tcpr/module/tcpr.ko := ld -r -m elf_x86_64 -T /usr/src/linux-headers-3.5.0-23-generic/scripts/module-common.lds --build-id  -o /home/herat/Downloads/tcpr/module/tcpr.ko /home/herat/Downloads/tcpr/module/tcpr.o /home/herat/Downloads/tcpr/module/tcpr.mod.o
