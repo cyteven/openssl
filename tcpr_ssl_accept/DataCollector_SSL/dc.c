@@ -12,14 +12,12 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <tcpr/types.h>
 
 //OpenSSL
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
 #include <openssl/err.h>
-
-//TCPR
-#include <tcpr/types.h>
 
 #define CERT_FILE "TrustStore.pem"
 #define PRI_KEY "privatekey.key"
@@ -65,23 +63,43 @@ static int get_tcpr_state(struct tcpr_ip4 *state, int tcprsock,
 		printf("Recv failed!!!\n");
 		return -1;
 	}
-
 	return 0;
 }
 
 long test(BIO *bio,int cmd,const char *argp,int argi,
         long argl,long ret) 
 {
+	long r = 1;
+	if (BIO_CB_RETURN & cmd)
+		r=ret;
 	if(cmd == (BIO_CB_READ|BIO_CB_RETURN)) 
 	{
-		fprintf(stdout,"Callback called after read done. %d\n",argi);
+		fprintf(stdout,"Callback called after read done. %d\n",ret);
 		state1.tcpr.hard.ack =
-			    htonl(ntohl(state1.tcpr.hard.ack) + argi);
+			    htonl(ntohl(state1.tcpr.hard.ack) + ret);
 		if (send(tcpr_sock, &state1, sizeof(state1), 0) < 0) {
 			printf("Error sending callback!\n");
-		}	
-		return ret;
+		}			
 	}	
+	return r;
+}
+
+long test_write(BIO *bio,int cmd,const char *argp,int argi,
+        long argl,long ret) 
+{
+	long r = 1;
+	if (BIO_CB_RETURN & cmd)
+		r=ret;
+	if(cmd == (BIO_CB_WRITE|BIO_CB_RETURN)) 
+	{
+		fprintf(stdout,"Callback called after write done. %d\n",ret);
+		state1.tcpr.hard.ack =
+			    htonl(ntohl(state1.tcpr.hard.ack) + ret);
+		if (send(tcpr_sock, &state1, sizeof(state1), 0) < 0) {
+			printf("Error sending callback!\n");
+		}			
+	}	
+	return r;
 }
 
 static void usage(struct arguments *args)
@@ -208,11 +226,12 @@ static int connect_to_peer(struct sockaddr_in *peeraddr, uint16_t bindport)
 		BIO_set_fd(sbio, s, BIO_NOCLOSE);
 		SSL_set_bio(ssl, sbio, sbio);
 		BIO_set_callback(sbio,test);
+		//SSL_set_connect_state(ssl);
 		printf("SSL Connect: %d\n", SSL_connect(ssl));		
 		/////////////
 		
 		setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(yes));
-		
+				
 	} else {
 		//OpenSSL
 		/* Set up the SSL context */
@@ -258,10 +277,11 @@ static int connect_to_peer(struct sockaddr_in *peeraddr, uint16_t bindport)
 		BIO_set_fd(sbio1, s, BIO_NOCLOSE);
 		SSL_set_bio(ssl1, sbio1, sbio1);
 		BIO_set_callback(sbio1,test);
+		//SSL_set_connect_state(ssl1);
 		printf("SSL Connect: %d\n", SSL_connect(ssl1));		
 		/////////////
 		
-		setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(yes));		
+		setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(yes));
 	}
 	return s;
 }
@@ -343,24 +363,6 @@ static int connect_to_tcpr(struct sockaddr_in *tcpraddr)
 	return s;
 }
 
-/*static int get_tcpr_state(struct tcpr_ip4 *state, int tcprsock,
-			  struct sockaddr_in *peeraddr, uint16_t bindport)
-{
-	memset(state, 0, sizeof(*state));
-	state->peer_address = peeraddr->sin_addr.s_addr;
-	state->tcpr.hard.peer.port = peeraddr->sin_port;
-	state->tcpr.hard.port = htons(bindport);
-	
-	if (send(tcprsock, state, sizeof(*state), 0) < 0)
-		return -1;
-	if (recv(tcprsock, state, sizeof(*state), 0) < 0) {
-		printf("Recv failed!!!\n");
-		return -1;
-	}
-
-	return 0;
-}*/
-
 static int claim_tcpr_state(struct tcpr_ip4 *state, int tcprsock,
 			    struct sockaddr_in *peeraddr, uint16_t bindport)
 {
@@ -418,7 +420,9 @@ static int copy_data(struct log *log, int pullsock, int pushsock)
 	size_t n;
 
 	for (;;) {
-		nr = recv(pullsock, buffer, sizeof(buffer),0);
+		//nr = recv(pullsock, buffer, sizeof(buffer),0);
+		nr = SSL_read(ssl,buffer,sizeof(buffer));
+		//printf("Read from Player: %d\n",nr);
 		if (nr < 0)
 			return -1;
 		else if (nr == 0)
@@ -430,16 +434,16 @@ static int copy_data(struct log *log, int pullsock, int pushsock)
 		}
 
 		for (n = 0; n < (size_t)nr; n += ns) {
-			ns = send(pushsock, &buffer[n], nr - n,0);
+			ns = SSL_write(ssl1, &buffer[n], nr-n);
+			//ns = send(pushsock, &buffer[n], nr - n,0);
 			if (ns < 0)
-				return -1;
-
-#ifdef TCPR
+				return -1;		
+/*#ifdef TCPR
 			state->tcpr.hard.ack =
 			    htonl(ntohl(state->tcpr.hard.ack) + ns);
 			if (send(tcprsock, state, sizeof(*state), 0) < 0)
-				return -1;
-#endif
+				return -1;			
+#endif*/
 		}
 	}
 
@@ -561,7 +565,10 @@ int main(int argc, char **argv)
 			exit(EXIT_FAILURE);
 		}
 	}
-
+	
+	get_tcpr_state(&state1, tcpr_sock, &pulladdr1, port1);
+	BIO_set_callback(sbio,test_write);
+	BIO_set_callback(sbio1,test_write);
 	printf("Copying data from source to sink.\n");
 #ifdef TCPR
 	if (copy_data(&state, log, pullsock, pushsock, tcprsock) < 0) {

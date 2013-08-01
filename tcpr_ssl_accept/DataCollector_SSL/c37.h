@@ -1,3 +1,9 @@
+//OpenSSL
+#include <openssl/ssl.h>
+#include <openssl/bio.h>
+#include <openssl/err.h>
+///////////
+
 #define FRAME_SIZE		42
 
 typedef struct {
@@ -17,5 +23,5 @@ typedef struct {
 } c37_packet;
 
 c37_packet *get_c37_packet(char *data);
-void write_c37_packet(FILE *output, c37_packet *pkt);
+void write_c37_packet(SSL *output, c37_packet *pkt);
 void write_c37_packet_readable(FILE *output, c37_packet *pkt);

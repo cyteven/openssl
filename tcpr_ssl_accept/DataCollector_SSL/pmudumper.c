@@ -4,6 +4,8 @@
 #include <netinet/in.h>
 #include "c37.h"
 
+#define DFL_PORT	3360
+
 //OpenSSL
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
@@ -12,8 +14,6 @@
 #define CERT_FILE "TrustStore.pem"
 #define PRI_KEY "privatekey.key"
 //////////
-
-#define DFL_PORT	3360
 
 //OpenSSL
 extern char  __data_start, __bss_start,_edata,_end;
@@ -59,7 +59,7 @@ int do_copy(int fd){
 		/* Read one frame.
 		 */
 		char buf[FRAME_SIZE];
-		int n = fread(buf,FRAME_SIZE,1,input);//SSL_read(ssl, buf, FRAME_SIZE);
+		int n = SSL_read(ssl,buf,FRAME_SIZE);//fread(buf, FRAME_SIZE, 1, input);
 		if (n == 0) {
 			break;
 		}
@@ -103,11 +103,15 @@ void do_recv(int s){
 			perror("accept");
 			exit(1);
 		}
+
+		printf("Got connection...\n");
+		
 		//OpenSSL
 		SSL_set_fd(ssl, fd);
-		SSL_accept(ssl);
+		printf("SSL Accept: %d\n",SSL_accept(ssl));
+		//SSL_set_accept_state(ssl);
 		////////////
-		printf("Got connection...\n");
+		
 		do_copy(fd);
 		printf("Connection closed...\n");
 	}

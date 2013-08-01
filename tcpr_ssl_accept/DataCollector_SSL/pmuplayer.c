@@ -7,15 +7,6 @@
 #include <sys/time.h>
 #include "c37.h"
 
-#include <ctype.h>
-#include <fcntl.h>
-#include <netdb.h>
-#include <pthread.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-
 #define DFL_PORT	3350
 
 //OpenSSL
@@ -109,7 +100,7 @@ int do_copy(int fd){
 		 */
 		double pkttime = pkt->soc +
 						(double) (pkt->fracsec & 0xFFFFFF) / 0x1000000;
-
+		
 		/* Get the current time.
 		 */
 		gettimeofday(&tv, 0);
@@ -120,7 +111,8 @@ int do_copy(int fd){
 		double wait = start + (pkttime - firsttime) - now;
 		int usec = (int) (wait * 1000000);
 		if (usec > 0) {
-			fflush(output);
+			//fflush(output);
+			BIO_flush(bio);
 			usleep(usec);
 		}
 
@@ -130,8 +122,8 @@ int do_copy(int fd){
 		pkt->soc = (int) newtime;
 		pkt->fracsec = (pkt->fracsec & 0xFF000000) |
 	 						(int) ((newtime - pkt->soc) * 1000000);
-
-		write_c37_packet(output, pkt);
+		//printf("Writing...\n");
+		write_c37_packet(ssl, pkt);
 		free(pkt);
 	}
 
@@ -144,7 +136,7 @@ int do_copy(int fd){
 void do_recv(int s){
 	int fd;
 	int yes = 1;
-	
+
 	for (;;) {
 		if (listen(s, 1) < 0) {
 			perror("listen");
@@ -155,15 +147,20 @@ void do_recv(int s){
 			perror("accept");
 			exit(1);
 		}
+
+		printf("Got connection...\n");
 		
 		//OpenSSL
 		SSL_set_fd(ssl, fd);	
-		printf("Accept: %d\n",SSL_accept(ssl));		
+		printf("SSL Accept: %d\n",SSL_accept(ssl));
+		bio = SSL_get_wbio(ssl);		
+		//SSL_set_accept_state(ssl);
 		////////////
 		
-		printf("Got connection...\n");
 		setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(yes));
-		while (do_copy(fd));
+		
+		while (do_copy(fd))
+			;
 		printf("Connection closed...\n");
 	}
 }

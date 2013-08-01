@@ -88,11 +88,12 @@ void form_c37_packet(char *buf, c37_packet *pkt) {
     (void) ComputeCRC((unsigned char *)buf, pkt->framesize-2);
 }
 
-void write_c37_packet(FILE *output, c37_packet *pkt) {
+void write_c37_packet(SSL *output, c37_packet *pkt) {
 	char buf[FRAME_SIZE];
 
     form_c37_packet(buf, pkt);
-	fwrite(buf, pkt->framesize, 1, output);
+	//fwrite(buf, pkt->framesize, 1, output);
+	SSL_write(output, buf, pkt->framesize);
 }
 
 void write_c37_packet_readable(FILE *output, c37_packet *pkt) {
@@ -103,5 +104,4 @@ void write_c37_packet_readable(FILE *output, c37_packet *pkt) {
 		usec / 1000,
         pkt->voltage_amplitude, pkt->voltage_angle,
         pkt->current_amplitude, pkt->current_angle);
-    
 }

@@ -1,0 +1,207 @@
+execve("./dc", ["./dc", "10.0.0.1", "3350", "1", "10.0.3.1", "3360"], [/* 22 vars */]) = 0
+brk(0)                                  = 0x6d4c000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590eab000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 5
+fstat(5, {st_mode=S_IFREG|0644, st_size=72264, ...}) = 0
+mmap(NULL, 72264, PROT_READ, MAP_PRIVATE, 5, 0) = 0x7f6590e99000
+close(5)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/x86_64-linux-gnu/libdl.so.2", O_RDONLY|O_CLOEXEC) = 5
+read(5, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\340\r\0\0\0\0\0\0"..., 832) = 832
+fstat(5, {st_mode=S_IFREG|0644, st_size=14768, ...}) = 0
+mmap(NULL, 2109704, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 5, 0) = 0x7f6590a87000
+mprotect(0x7f6590a89000, 2097152, PROT_NONE) = 0
+mmap(0x7f6590c89000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 5, 0x2000) = 0x7f6590c89000
+close(5)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/x86_64-linux-gnu/libpthread.so.0", O_RDONLY|O_CLOEXEC) = 5
+read(5, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\200l\0\0\0\0\0\0"..., 832) = 832
+fstat(5, {st_mode=S_IFREG|0755, st_size=135366, ...}) = 0
+mmap(NULL, 2212904, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 5, 0) = 0x7f659086a000
+mprotect(0x7f6590882000, 2093056, PROT_NONE) = 0
+mmap(0x7f6590a81000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 5, 0x17000) = 0x7f6590a81000
+mmap(0x7f6590a83000, 13352, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f6590a83000
+close(5)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 5
+read(5, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\200\30\2\0\0\0\0\0"..., 832) = 832
+fstat(5, {st_mode=S_IFREG|0755, st_size=1811128, ...}) = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590e98000
+mmap(NULL, 3925208, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 5, 0) = 0x7f65904ab000
+mprotect(0x7f6590660000, 2093056, PROT_NONE) = 0
+mmap(0x7f659085f000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 5, 0x1b4000) = 0x7f659085f000
+mmap(0x7f6590865000, 17624, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f6590865000
+close(5)                                = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590e97000
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590e96000
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590e95000
+arch_prctl(ARCH_SET_FS, 0x7f6590e96700) = 0
+mprotect(0x7f659085f000, 16384, PROT_READ) = 0
+mprotect(0x7f6590a81000, 4096, PROT_READ) = 0
+mprotect(0x7f6590c89000, 4096, PROT_READ) = 0
+mprotect(0x785000, 4096, PROT_READ)     = 0
+mprotect(0x7f6590ead000, 4096, PROT_READ) = 0
+munmap(0x7f6590e99000, 72264)           = 0
+set_tid_address(0x7f6590e969d0)         = 7038
+set_robust_list(0x7f6590e969e0, 0x18)   = 0
+futex(0x7fffcdde48ac, FUTEX_WAIT_BITSET_PRIVATE|FUTEX_CLOCK_REALTIME, 1, NULL, 7f6590e96700) = -1 EAGAIN (Resource temporarily unavailable)
+rt_sigaction(SIGRTMIN, {0x7f6590870750, [], SA_RESTORER|SA_SIGINFO, 0x7f6590879cb0}, NULL, 8) = 0
+rt_sigaction(SIGRT_1, {0x7f65908707e0, [], SA_RESTORER|SA_RESTART|SA_SIGINFO, 0x7f6590879cb0}, NULL, 8) = 0
+rt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], NULL, 8) = 0
+getrlimit(RLIMIT_STACK, {rlim_cur=8192*1024, rlim_max=RLIM_INFINITY}) = 0
+brk(0)                                  = 0x6d4c000
+brk(0x6d6d000)                          = 0x6d6d000
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 4), ...}) = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590eaa000
+write(1, "Connecting to TCPR.\n", 20)   = 20
+socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP) = 5
+connect(5, {sa_family=AF_INET, sin_port=htons(3350), sin_addr=inet_addr("10.0.0.1")}, 16) = 0
+write(1, "Waiting for existing master, if "..., 37) = 37
+sendto(5, "\0\0\0\0\n\0\0\1'\20\r\26\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 60, 0, NULL, 0) = 60
+recvfrom(5, "\0\0\0\0\n\0\0\1'\20\r\26\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 60, 0, NULL, NULL) = 60
+write(1, "Creating fresh connection.\n", 27) = 27
+mmap(NULL, 8392704, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_STACK, -1, 0) = 0x7f658fcaa000
+mprotect(0x7f658fcaa000, 4096, PROT_NONE) = 0
+clone(child_stack=0x7f65904a9ff0, flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tidptr=0x7f65904aa9d0, tls=0x7f65904aa700, child_tidptr=0x7f65904aa9d0) = 7039
+write(1, "Connecting to data source.\n", 27) = 27
+open("/dev/urandom", O_RDONLY|O_NOCTTY|O_NONBLOCK) = 8
+fstat(8, {st_mode=S_IFCHR|0666, st_rdev=makedev(1, 9), ...}) = 0
+poll([{fd=8, events=POLLIN}], 1, 10)    = 1 ([{fd=8, revents=POLLIN}])
+read(8, "\30\261\t\340\262\363\226]\356\237\212\314\370\7U\35$\344\360P\340\251l\256pBv2\0\361\263\331", 32) = 32
+close(8)                                = 0
+getuid()                                = 0
+open("TrustStore.pem", O_RDONLY)        = 8
+fstat(8, {st_mode=S_IFREG|0664, st_size=3107, ...}) = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590ea9000
+read(8, "-----BEGIN CERTIFICATE-----\nMIID"..., 4096) = 3107
+read(8, "", 4096)                       = 0
+close(8)                                = 0
+munmap(0x7f6590ea9000, 4096)            = 0
+socket(PF_INET, SOCK_STREAM, IPPROTO_TCP) = 8
+setsockopt(8, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+bind(8, {sa_family=AF_INET, sin_port=htons(10000), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
+connect(8, {sa_family=AF_INET, sin_port=htons(3350), sin_addr=inet_addr("10.0.0.1")}, 16) = 0
+sendto(5, "\0\0\0\0\n\0\0\1'\20\r\26\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 60, 0, NULL, 0) = 60
+recvfrom(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\276\373\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, NULL) = 60
+write(8, "\26\3\1\1<\1\0\0018\3\3Q\372\220]<a?\215\330\247\237\336M\356\10=\346\230\217\311\225"..., 321) = 321
+read(8, "\26\3\3\0:\2\0", 7)            = 7
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\277\2\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\0006\3\3Q\372\220]K\266\27\252\324K\216\303#\352q\370|\231\2364p\33j\5\304\222\363o"..., 56) = 56
+write(1, "Callback called after read done."..., 36) = 36
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\277:\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\26\3\3\3\355", 5)             = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\277?\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\v\0\3\351\0\3\346\0\3\3430\202\3\3370\202\2\307\240\3\2\1\2\2\t\0\333@\351\244\223+"..., 1005) = 1005
+write(1, "Callback called after read done."..., 38) = 38
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\303,\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+open("/etc/localtime", O_RDONLY|O_CLOEXEC) = 9
+fstat(9, {st_mode=S_IFREG|0644, st_size=3519, ...}) = 0
+fstat(9, {st_mode=S_IFREG|0644, st_size=3519, ...}) = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590ea9000
+read(9, "TZif2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\4\0\0\0\4\0\0\0\0"..., 4096) = 3519
+lseek(9, -2252, SEEK_CUR)               = 1267
+read(9, "TZif2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\5\0\0\0\5\0\0\0\0"..., 4096) = 2252
+close(9)                                = 0
+munmap(0x7f6590ea9000, 4096)            = 0
+read(8, "\26\3\3\0\4", 5)               = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\3031\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\16\0\0\0", 4)                 = 4
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\3035\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+write(8, "\26\3\3\1\6\20\0\1\2\1\0\245]\230):CJ\t\355U\337\240\324y\233{r\211A\17\266"..., 318) = 318
+read(8, "\26\3\3\0\252", 5)             = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\303:\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\4\0\0\246\0\0\1,\0\240\327\301\331<]\r\304\320\210\311y\236?\21M\226\1\353\214\364\271\346"..., 170) = 170
+write(1, "Callback called after read done."..., 37) = 37
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\303\344\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\24\3\3\0\1", 5)               = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\303\351\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\1", 1)                        = 1
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\303\352\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\26\3\3\0(", 5)                = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\303\357\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+read(8, "\r\250z1\230M-\336\n\3304\34\6J\334\315\10\224\305\360?\351\223p\3\355A\37\356\201mG"..., 40) = 40
+write(1, "Callback called after read done."..., 36) = 36
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\304\27\0\0\0\0\0\0\0\0\332\327\276\373"..., 60, 0, NULL, 0) = 60
+write(1, "SSL Connect: 1\n", 15)        = 15
+setsockopt(8, SOL_TCP, TCP_NODELAY, [1], 4) = 0
+write(1, "Connecting to data sink.\n", 25) = 25
+open("TrustStore.pem", O_RDONLY)        = 9
+fstat(9, {st_mode=S_IFREG|0664, st_size=3107, ...}) = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6590ea9000
+read(9, "-----BEGIN CERTIFICATE-----\nMIID"..., 4096) = 3107
+read(9, "", 4096)                       = 0
+close(9)                                = 0
+munmap(0x7f6590ea9000, 4096)            = 0
+socket(PF_INET, SOCK_STREAM, IPPROTO_TCP) = 9
+connect(9, {sa_family=AF_INET, sin_port=htons(3360), sin_addr=inet_addr("10.0.3.1")}, 16) = 0
+sendto(5, "\0\0\0\0\n\0\0\1'\20\r\26\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 60, 0, NULL, 0) = 60
+recvfrom(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\304\27\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, NULL) = 60
+write(9, "\26\3\1\1<\1\0\0018\3\3Q\372\220]\252B\r#\226\346\34\211E\240Vv@\205\30\300l"..., 321) = 321
+read(9, "\26\3\3\0:\2\0", 7)            = 7
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\304\36\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\0006\3\3Q\372\220]:\v\233\35R:\371\272\256\323\261C\n\2005\376\264\344(\24\323\344MT"..., 56) = 56
+write(1, "Callback called after read done."..., 36) = 36
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\304V\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\26\3\3\3\355", 5)             = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\304[\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\v\0\3\351\0\3\346\0\3\3430\202\3\3370\202\2\307\240\3\2\1\2\2\t\0\333@\351\244\223+"..., 1005) = 1005
+write(1, "Callback called after read done."..., 38) = 38
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\310H\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\26\3\3\0\4", 5)               = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\310M\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\16\0\0\0", 4)                 = 4
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\310Q\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+write(9, "\26\3\3\1\6\20\0\1\2\1\0\253.\345\231\0\327.\31\3036|\347\37\242\212$\365\"\255\2066"..., 318) = 318
+read(9, "\26\3\3\0\252", 5)             = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\310V\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\4\0\0\246\0\0\1,\0\240\204\211`r\3451bq\370S\251\336^\20\256\307\302\331iR@\n"..., 170) = 170
+write(1, "Callback called after read done."..., 37) = 37
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\311\0\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\24\3\3\0\1", 5)               = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\311\5\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\1", 1)                        = 1
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\311\6\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\26\3\3\0(", 5)                = 5
+write(1, "Callback called after read done."..., 35) = 35
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\311\v\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+read(9, "\10}\336\r\5'\225\302t\220]\23\r\231\v\271\356\223\37\257\256\313%\304\364\344\26\177\16\35\315\322"..., 40) = 40
+write(1, "Callback called after read done."..., 36) = 36
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\3113\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, 0) = 60
+write(1, "SSL Connect: 1\n", 15)        = 15
+setsockopt(9, SOL_TCP, TCP_NODELAY, [1], 4) = 0
+sendto(5, "\0\0\0\0\n\0\0\1'\20\r\26\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 60, 0, NULL, 0) = 60
+recvfrom(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\3113\0\0\0\0\0\0\0\0\332\327\3035"..., 60, 0, NULL, NULL) = 60
+write(1, "Sending ID to data source.\n", 27) = 27
+sendto(8, "1", 1, 0, NULL, 0)           = 1
+sendto(5, "\0\0\0\0\n\0\0\1'\20\r\26\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 60, 0, NULL, 0) = 60
+recvfrom(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\3113\0\0\0\0\0\0\0\0\332\327\304^"..., 60, 0, NULL, NULL) = 60
+write(1, "Copying data from source to sink"..., 34) = 34
+read(8, "\27\3\3\0B", 5)                = 5
+read(8, "\r\250z1\230M-\337\312\21X\210\266\235\24\236\37/\305\224\27\201\3762\311\356\372\255\222\237\330\n"..., 66) = 66
+write(9, "\27\3\3\0BC\25kC\31\360\204c^\31\242k\317\205|E\250O\235U\327\341\205\212e\3525"..., 71) = 71
+write(1, "Callback called after write done"..., 37) = 37
+sendto(5, "\n\0\1\1\n\0\0\1'\20\r\26\264\5\10\1\332\327\311z\0\0\0\0\0\0\0\0\332\327\304^"..., 60, 0, NULL, 0) = 60
+read(8, 0x7d098b, 5)                    = -1 ETIMEDOUT (Connection timed out)
+dup(2)                                  = 10
+fcntl(10, F_GETFL)                      = 0x8001 (flags O_WRONLY|O_LARGEFILE)
+close(10)                               = 0
+write(2, "Copying data: Connection timed o"..., 35Copying data: Connection timed out
+) = 35
+exit_group(1)                           = ?
