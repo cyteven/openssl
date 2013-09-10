@@ -90,42 +90,8 @@ void form_c37_packet(char *buf, c37_packet *pkt) {
 
 void write_c37_packet(SSL *output, c37_packet *pkt) {
 	char buf[FRAME_SIZE];
-
-    form_c37_packet(buf, pkt);
-	//fwrite(buf, pkt->framesize, 1, output);
-	int t;
-	t = SSL_write(output, buf, pkt->framesize);
-	write_c37_packet_readable(stdout,pkt);
-	printf("Wrote : %d\n",t);
-	switch(SSL_get_error(output,t)) {
-		case SSL_ERROR_NONE:
-			printf("SSL_ERROR_NONE\n");
-			break;
-		case SSL_ERROR_ZERO_RETURN:
-			printf("SSL_ERROR_ZERO_RETURN\n");
-			break;	
-		case SSL_ERROR_WANT_READ:
-			printf("SSL_ERROR_WANT_READ\n");
-			break;
-		case SSL_ERROR_WANT_WRITE:
-			printf("SSL_ERROR_WANT_WRITE\n");
-			break;
-		case SSL_ERROR_WANT_CONNECT:
-			printf("SSL_ERROR_WANT_CONNECT\n");
-			break;
-		case SSL_ERROR_WANT_ACCEPT:
-			printf("SSL_ERROR_WANT_ACCEPT\n");
-			break;
-		case SSL_ERROR_WANT_X509_LOOKUP:
-			printf("SSL_ERROR_WANT_X509_LOOKUP\n");
-			break;				
-		case SSL_ERROR_SYSCALL:
-			printf("SSL_ERROR_SYSCALL\n");
-			break;
-		case SSL_ERROR_SSL:
-			printf("SSL_ERROR_SSL\n");
-			break;			
-	}
+    form_c37_packet(buf, pkt);	
+	SSL_write(output, buf, pkt->framesize);
 }
 
 void write_c37_packet_readable(FILE *output, c37_packet *pkt) {

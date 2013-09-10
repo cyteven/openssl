@@ -2,35 +2,19 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <netinet/in.h>
-#include "c37.h"
-
-#define DFL_PORT	3360
-
-//OpenSSL
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
 #include <openssl/err.h>
+#include "c37.h"
 
-#define CERT_FILE "TrustStore.pem"
-#define PRI_KEY "privatekey.key"
-//////////
+#define DFL_PORT	3360
+#define CERT_FILE   "TrustStore.pem"
+#define PRI_KEY     "privatekey.key"
 
-//OpenSSL
 extern char  __data_start, __bss_start,_edata,_end;
-BIO * bio;
-SSL * ssl;
-SSL_CTX * ctx;
-
-int password_callback(char *buf, int size, int rwflag, void *userdata)
-{
-    /* For the purposes of this demonstration, the password is "ibmdw" */
-    printf("*** Callback function called\n");
-    strcpy(buf, "ibmdw");
-    return 1;
-}
-
-int (*callback)(char *, int, int, void *) = &password_callback;
-//////////
+BIO          *bio;
+SSL          *ssl;
+SSL_CTX      *ctx;
 
 /* Global stuff gleaned from program arguments.
  */
@@ -39,14 +23,14 @@ struct prog_args {
 	char *port;
 } prog_args;
 
-static void usage(){
+static void usage() {
 	fprintf(stderr, "Usage: %s [args]\n", prog_args.name);
 	fprintf(stderr, "Optional argument:\n");
 	fprintf(stderr, "	-p port: TCP server port [default = %d]\n", DFL_PORT);
 	exit(1);
 }
 
-int do_copy(int fd){
+int do_copy(int fd) {
 	FILE *input = fdopen(fd, "r");
 	if (input == 0) {
 		fprintf(stderr, "%s: fdopen failed\n", prog_args.name);
@@ -59,7 +43,6 @@ int do_copy(int fd){
 		/* Read one frame.
 		 */
 		char buf[FRAME_SIZE];
-		char c;
 		int n = SSL_read(ssl,buf,FRAME_SIZE);//fread(buf, FRAME_SIZE, 1, input);
 					
 		if (n == 0) {
@@ -91,11 +74,10 @@ int do_copy(int fd){
 	}
 
 	fclose(input);
-
 	return 1;
 }
 
-void do_recv(int s){
+void do_recv(int s) {
 	int fd;
 	for (;;) {
 		if (listen(s, 1) < 0) {
@@ -110,18 +92,15 @@ void do_recv(int s){
 
 		printf("Got connection...\n");
 		
-		//OpenSSL
 		SSL_set_fd(ssl, fd);
-		printf("SSL Accept: %d\n",SSL_accept(ssl));
-		//SSL_set_accept_state(ssl);
-		////////////
-		
+		SSL_accept(ssl);
+				
 		do_copy(fd);
 		printf("Connection closed...\n");
 	}
 }
 
-static void get_args(int argc, char *argv[]){
+static void get_args(int argc, char *argv[]) {
 	prog_args.name = argv[0];
 
 	int c;
@@ -155,16 +134,14 @@ static void get_args(int argc, char *argv[]){
 /* If called without arguments, listen for connections.  Otherwise make a
  * connection to the specified first argument.
  */
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
 	get_args(argc, argv);
 	
-	//OpenSSL
 	SSL_load_error_strings();
 	ERR_load_BIO_strings();
 	ERR_load_SSL_strings();
 	SSL_library_init();
 	OpenSSL_add_all_algorithms();
-	/////////
 
 	int port = DFL_PORT;
 	if (prog_args.port != 0) {
@@ -192,35 +169,30 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	
-	//OpenSSL
 	printf("Attempting to create SSL context... ");
 	ctx = SSL_CTX_new(SSLv23_server_method());
 
-	if(ctx == NULL)
-	{
+	if(ctx == NULL) {
 		printf("Failed. Aborting.\n");
 		return 0;
 	}
 
 	printf("\nLoading certificates...\n");
-	SSL_CTX_set_default_passwd_cb(ctx, callback);
-	if(!SSL_CTX_use_certificate_file(ctx, CERT_FILE, SSL_FILETYPE_PEM))
-	{
+	if(!SSL_CTX_use_certificate_file(ctx, CERT_FILE, SSL_FILETYPE_PEM)) {
 		ERR_print_errors_fp(stdout);
 		SSL_CTX_free(ctx);
 		return 0;
 	}
-	if(!SSL_CTX_use_PrivateKey_file(ctx, PRI_KEY, SSL_FILETYPE_PEM))
-	{
+	if(!SSL_CTX_use_PrivateKey_file(ctx, PRI_KEY, SSL_FILETYPE_PEM)) {
 		ERR_print_errors_fp(stdout);
 		SSL_CTX_free(ctx);
 		return 0;
 	}
 	SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
 	SSL_CTX_set_timeout(ctx, 6000);
-	ssl = SSL_new(ctx);	
-	////////////
+	ssl = SSL_new(ctx);
 
 	do_recv(s);
+	
 	return 0;
 }

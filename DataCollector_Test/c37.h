@@ -1,8 +1,6 @@
-//OpenSSL
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
 #include <openssl/err.h>
-///////////
 
 #define FRAME_SIZE		42
 

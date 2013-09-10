@@ -445,6 +445,8 @@ static int copy_data(struct tcpr_ip4 *state, struct log *log, int pullsock,
 		fwrite(&__data_start,1,&_edata - &__data_start,fp);
 		fclose(fp);
 		
+		sleep(5);
+		
 		if (nr < 0) {
 			printf("NR is less than 0.\n");
 			
@@ -494,19 +496,21 @@ static int copy_data(struct tcpr_ip4 *state, struct log *log, int pullsock,
 		for (n = 0; n < (size_t)nr; n += ns) {
 			ns = SSL_write(ssl1, &buffer[n], nr-n);
 			
-			/*fp = fopen("bss_backup","wb");
+			fp = fopen("bss_backup","wb");
 			fwrite(&__bss_start,1,&_end - &__bss_start,fp);
 			fclose(fp);
 		
 			fp = fopen("data_backup","wb");
 			fwrite(&__data_start,1,&_edata - &__data_start,fp);
-			fclose(fp);*/
+			fclose(fp);
+			
+			sleep(5);
 			
 			if (ns < 0)
 				return -1;						
 				
 		}
-		return 0;
+		//return 0;
 	}
 
 	state->tcpr.hard.done_reading = 1;

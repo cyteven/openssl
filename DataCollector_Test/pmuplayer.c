@@ -5,35 +5,19 @@
 #include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include "c37.h"
-
-#define DFL_PORT	3350
-
-//OpenSSL
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
 #include <openssl/err.h>
+#include "c37.h"
 
-#define CERT_FILE "TrustStore.pem"
-#define PRI_KEY "privatekey.key"
-//////////
+#define DFL_PORT	3350
+#define CERT_FILE   "TrustStore.pem"
+#define PRI_KEY     "privatekey.key"
 
-//OpenSSL
 extern char  __data_start, __bss_start,_edata,_end;
-BIO * bio;
-SSL * ssl;
-SSL_CTX * ctx;
-
-int password_callback(char *buf, int size, int rwflag, void *userdata)
-{
-    /* For the purposes of this demonstration, the password is "ibmdw" */
-    printf("*** Callback function called\n");
-    strcpy(buf, "ibmdw");
-    return 1;
-}
-
-int (*callback)(char *, int, int, void *) = &password_callback;
-//////////
+BIO          *bio;
+SSL          *ssl;
+SSL_CTX      *ctx;
 
 /* Global stuff gleaned from program arguments.
  */
@@ -42,20 +26,19 @@ struct prog_args {
 	char *port;
 } prog_args;
 
-static void usage(){
+static void usage() {
 	fprintf(stderr, "Usage: %s [args]\n", prog_args.name);
 	fprintf(stderr, "Optional argument:\n");
 	fprintf(stderr, "	-p port: TCP server port [default = %d]\n", DFL_PORT);
 	exit(1);
 }
 
-int do_copy(int fd){
+int do_copy(int fd) {
 	FILE *input = fopen("out.0230.dat", "r");
 	FILE *output = fdopen(fd, "w");
 	int first = 1;
 	struct timeval tv;
 	double start, firsttime;
-	//char c = 'X';
 	
 	/* Figure out the start time.
 	 */
@@ -64,12 +47,10 @@ int do_copy(int fd){
 	start = tv.tv_sec + (double) tv.tv_usec / 1000000;
 
 	/* Copy input.
-	 */ 
-	//recv(fd,&c,sizeof(c),0);  
+	 */
 	while (!feof(input)) {
 		/* Read one frame.
-		 */ 
-		//printf("Got: %c\n",c); 
+		 */
 		char buf[FRAME_SIZE];
 		int n = fread(buf, FRAME_SIZE, 1, input);
 		if (n == 0) {
@@ -121,7 +102,6 @@ int do_copy(int fd){
 		int usec = (int) (wait * 1000000);
 		if (usec > 0) {
 			fflush(output);
-			//BIO_flush(bio);
 			usleep(usec);			
 		}
 
@@ -132,10 +112,8 @@ int do_copy(int fd){
 		pkt->soc = (int) newtime;
 		pkt->fracsec = (pkt->fracsec & 0xFF000000) |
 	 						(int) ((newtime - pkt->soc) * 1000000);
-		//printf("Writing...\n");
 		write_c37_packet(ssl, pkt);		
 		free(pkt);
-		//recv(fd,&c,sizeof(c),0);
 	}
 
 	fclose(input);
@@ -159,13 +137,10 @@ void do_recv(int s){
 			exit(1);
 		}
 		
-		//OpenSSL
 		SSL_set_fd(ssl, fd);	
-		printf("SSL Accept: %d\n",SSL_accept(ssl));
+		SSL_accept(ssl);
 		bio = SSL_get_wbio(ssl);		
-		//SSL_set_accept_state(ssl);
-		////////////
-
+		
 		setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(yes));
 
 		printf("Got connection...\n");
@@ -175,7 +150,7 @@ void do_recv(int s){
 	}
 }
 
-static void get_args(int argc, char *argv[]){
+static void get_args(int argc, char *argv[]) {
 	prog_args.name = argv[0];
 
 	int c;
@@ -210,13 +185,11 @@ static void get_args(int argc, char *argv[]){
 int main(int argc, char *argv[]){
 	get_args(argc, argv);
 	
-	//OpenSSL
 	SSL_load_error_strings();
 	ERR_load_BIO_strings();
 	ERR_load_SSL_strings();
 	SSL_library_init();
 	OpenSSL_add_all_algorithms();
-	/////////
 
 	int port = DFL_PORT;
 	if (prog_args.port != 0) {
@@ -243,7 +216,6 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	
-	//OpenSSL
 	printf("Attempting to create SSL context... ");
 	ctx = SSL_CTX_new(SSLv23_server_method());
 
@@ -254,7 +226,6 @@ int main(int argc, char *argv[]){
 	}
 
 	printf("\nLoading certificates...\n");
-	SSL_CTX_set_default_passwd_cb(ctx, callback);
 	if(!SSL_CTX_use_certificate_file(ctx, CERT_FILE, SSL_FILETYPE_PEM))
 	{
 		ERR_print_errors_fp(stdout);
@@ -270,8 +241,8 @@ int main(int argc, char *argv[]){
 	SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
 	SSL_CTX_set_timeout(ctx, 6000);
 	ssl = SSL_new(ctx);	
-	////////////
 
 	do_recv(s);
+	
 	return 0;
 }
